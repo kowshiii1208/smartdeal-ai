@@ -7,6 +7,7 @@
 [![Testing](https://img.shields.io/badge/Tests-Pytest%20(28%20Passed)-brightgreen.svg)](https://pytest.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Rigor Audit](https://img.shields.io/badge/Audit-Leak--Free%20Verified-0ea5e9.svg)](ml/evaluate.py)
+[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=kowshiii1208/smartdeal-ai&branch=main&mainModule=app.py)
 
 An intelligent, production-style e-commerce decision intelligence platform developed for BTech CSE placement presentations, hackathons, and academic project reviews. **SmartDeal AI** protects consumers against artificial "fake discounts" by using Machine Learning to predict fair market reference prices, tracking historical price trends with moving averages, and scoring deals from 0 to 100 using a transparent, multi-factor mathematical formula.
 
@@ -17,12 +18,14 @@ An intelligent, production-style e-commerce decision intelligence platform devel
 - [Problem Statement](#-problem-statement)
 - [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
+- [Cloud Deployment (1-Click)](#-cloud-deployment-1-click)
 - [Machine Learning Methodology](#-machine-learning-methodology)
 - [Deal Scoring Formula](#-transparent-deal-scoring-formula)
 - [Navigation Pages Guide](#-navigation-pages-guide)
 - [Technology Stack](#-technology-stack)
 - [Windows Setup & Quickstart](#-windows-setup--quickstart)
 - [Automated Testing](#-automated-testing)
+
 - [Viva & Placement Interview Q&A](#-viva--placement-interview-qa-guide)
 - [Ethical Data Provenance & Limitations](#-ethical-data-provenance--limitations)
 - [Project Directory Structure](#-project-directory-structure)
@@ -105,7 +108,35 @@ graph TD
 
 ---
 
+## 🌐 Cloud Deployment (1-Click)
+
+SmartDeal AI is production-ready and configured for instant cloud deployment:
+
+### Option 1: Streamlit Community Cloud (Recommended — Free & Direct)
+Deploy directly from your GitHub repository in 60 seconds:
+1. Click the **[Deploy to Streamlit](https://share.streamlit.io/deploy?repository=kowshiii1208/smartdeal-ai&branch=main&mainModule=app.py)** link.
+2. Sign in with your GitHub account (`kowshiii1208`).
+3. Streamlit Cloud automatically detects:
+   - **Repository:** `kowshiii1208/smartdeal-ai`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Click **Deploy!** — Your live app will be accessible worldwide at `https://smartdeal-ai.streamlit.app`.
+
+### Option 2: Docker Container Deployment (Render, Railway, Fly.io)
+SmartDeal AI includes a multi-stage production [`Dockerfile`](Dockerfile) and `.dockerignore`:
+```bash
+# Build the Docker image
+docker build -t smartdeal-ai .
+
+# Run the container locally or on cloud VM
+docker run -p 8501:8501 smartdeal-ai
+```
+Visit `http://localhost:8501` in your browser.
+
+---
+
 ## ⚙️ Machine Learning Methodology
+
 
 ### 1. Target Variable Definition
 - **Target**: `fair_reference_price` — the median historical equilibrium market benchmark of the product.
