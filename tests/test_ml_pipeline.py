@@ -121,3 +121,78 @@ def test_predict_fair_price_pipeline():
     assert pred_result["min_expected_price"] <= pred_result["predicted_price"]
     assert pred_result["max_expected_price"] >= pred_result["predicted_price"]
     assert pred_result["r2"] > 0
+    assert pred_result["is_ood"] is False
+
+
+def test_ml_reproducibility():
+    """Test that training with fixed RANDOM_SEED yields 100% reproducible metrics."""
+    from ml.train import train_and_evaluate_models
+    from config import CLEANED_PRODUCTS_PATH, SAMPLE_PRODUCTS_PATH
+
+    path = CLEANED_PRODUCTS_PATH if CLEANED_PRODUCTS_PATH.exists() else SAMPLE_PRODUCTS_PATH
+    df = pd.read_csv(path)
+
+    best_1, _, meta_1 = train_and_evaluate_models(df)
+    best_2, _, meta_2 = train_and_evaluate_models(df)
+
+    assert best_1 == best_2
+    for m in meta_1["model_comparison"]:
+        assert meta_1["model_comparison"][m]["mae"] == meta_2["model_comparison"][m]["mae"]
+        assert meta_1["model_comparison"][m]["rmse"] == meta_2["model_comparison"][m]["rmse"]
+        assert meta_1["model_comparison"][m]["r2"] == meta_2["model_comparison"][m]["r2"]
+
+
+def test_ood_detection_and_uncertainty_inflation():
+    """
+    Test that inputs outside training distribution (extreme MSRP, unseen category, unseen brand)
+    trigger OOD warnings, inflate uncertainty bounds, and enforce physical price boundaries.
+    """
+    ood_input = {
+        "category": "QuantumComputingExotics",  # Unseen category
+        "brand": "FuturisticAlienTech",         # Unseen brand
+        "original_price": 1_500_000,            # 7x maximum training MSRP (approx 200,000)
+        "rating": 4.9,
+        "review_count": 50,
+    }
+
+    pred_result = predict_fair_price(ood_input)
+
+    # 1. Verification of OOD flags and warnings
+    assert pred_result["is_ood"] is True
+    assert len(pred_result["warnings"]) >= 2
+    assert any("QuantumComputingExotics" in w for w in pred_result["warnings"])
+    assert any("FuturisticAlienTech" in w for w in pred_result["warnings"])
+    assert any("original_price" in w for w in pred_result["warnings"])
+
+    # 2. Dynamic uncertainty inflation check
+    base_rmse = pred_result["rmse"]
+    effective_rmse = pred_result["effective_rmse"]
+    assert effective_rmse > base_rmse
+    # With 3 warnings, inflation should be 1 + 3 * 0.35 = 2.05x
+    assert effective_rmse >= base_rmse * 2.0
+
+    # 3. Physical domain bounds check
+    # Predicted price must never exceed 98% of MSRP or fall below 10% of MSRP
+    orig_price = ood_input["original_price"]
+    assert pred_result["predicted_price"] <= orig_price * 0.98
+    assert pred_result["predicted_price"] >= orig_price * 0.10
+    assert pred_result["max_expected_price"] <= orig_price
+    assert pred_result["min_expected_price"] >= orig_price * 0.10
+
+
+def test_baseline_comparison_superiority():
+    """Verify that all supervised learning models outperform the dummy median baseline."""
+    from ml.predict import load_model_pipeline
+
+    _, metrics = load_model_pipeline()
+    comp = metrics["model_comparison"]
+
+    assert "Baseline (Dummy Median)" in comp
+    dummy_rmse = comp["Baseline (Dummy Median)"]["rmse"]
+
+    for model_name, res in comp.items():
+        if model_name != "Baseline (Dummy Median)":
+            # Real models must have substantially lower RMSE than dummy median
+            assert res["rmse"] < dummy_rmse
+            assert res["r2"] > 0.85
+

@@ -133,11 +133,14 @@ with col_result:
                         </div>
                     </div>
                     <div style="font-size: 0.78rem; color: #64748B;">
-                        Fitted Engine: <b style="color: #F8FAFC;">{pred_result['model_name']}</b> • Held-Out RMSE: <b style="color: #F8FAFC;">±{format_inr(rmse)}</b> • R²: <b style="color: #34D399;">{r2:.4f}</b>
+                        Fitted Engine: <b style="color: #F8FAFC;">{pred_result['model_name']}</b> • 
+                        {"Tolerance Band: <b style='color: #F59E0B;'>±" + format_inr(pred_result.get('effective_rmse', rmse)) + " (OOD Inflated)</b> • " if pred_result.get('is_ood') else "Held-Out RMSE: <b style='color: #F8FAFC;'>±" + format_inr(rmse) + "</b> • "}
+                        R²: <b style="color: #34D399;">{r2:.4f}</b>
                     </div>
                 </div>
                 """,
                 unsafe_allow_html=True,
+
             )
 
             # Deal Simulation Evaluation

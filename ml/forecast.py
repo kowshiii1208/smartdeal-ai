@@ -41,21 +41,34 @@ def compute_history_summary(history_df: pd.DataFrame) -> Dict[str, Any]:
 
 def evaluate_forecast_on_holdout(
     history_df: pd.DataFrame,
-    holdout_points: int = 5
+    holdout_points: Optional[int] = None
 ) -> Dict[str, Dict[str, float]]:
     """
     Evaluate forecasting models on a strict chronological holdout split.
+    Adapts holdout size dynamically for short time series (>= 4 observations)
+    so that holdout validation is never skipped when sufficient data exists.
     Compares:
       1. Naïve Persistence (Last Known Value)
-      2. 7-Day Moving Average Baseline
+      2. Moving Average Baseline
       3. Linear Trend Extrapolation
     """
     sorted_df = history_df.sort_values(by="observed_date").reset_index(drop=True)
-    if len(sorted_df) < (holdout_points * 2):
+    n = len(sorted_df)
+    if n < 4:
         return {}
 
-    train_df = sorted_df.iloc[:-holdout_points]
-    test_df = sorted_df.iloc[-holdout_points:]
+    if holdout_points is None:
+        # Default: hold out min(5, 20% of data), ensuring at least 1 point and leaving at least 3 train points
+        effective_holdout = max(1, min(5, n // 5))
+        if n - effective_holdout < 3:
+            effective_holdout = max(1, n - 3)
+    else:
+        # If specified holdout is too large, cap it so train has at least 3 points
+        effective_holdout = min(holdout_points, max(1, n - 3))
+
+    train_df = sorted_df.iloc[:-effective_holdout]
+    test_df = sorted_df.iloc[-effective_holdout:]
+
 
     y_test = test_df["price"].values
     
@@ -110,8 +123,8 @@ def generate_price_forecast(
     sorted_df["ma_7"] = sorted_df["price"].rolling(window=3, min_periods=1).mean().round(1)
     sorted_df["ma_14"] = sorted_df["price"].rolling(window=5, min_periods=1).mean().round(1)
 
-    # Evaluate holdout performance
-    holdout_metrics = evaluate_forecast_on_holdout(sorted_df, holdout_points=max(3, min(6, len(sorted_df) // 4)))
+    # Evaluate holdout performance with adaptive chronological holdout
+    holdout_metrics = evaluate_forecast_on_holdout(sorted_df)
 
     # Fit trend model on observed points
     n_points = len(sorted_df)

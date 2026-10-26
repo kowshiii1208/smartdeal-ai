@@ -16,17 +16,61 @@
     ]
   },
   "training_bounds": {
-    "original_price": [
-      3990.0,
-      242490.0
+    "numerical": {
+      "original_price": [
+        3990.0,
+        199900.0
+      ],
+      "rating": [
+        3.4,
+        4.9
+      ],
+      "review_count": [
+        94.0,
+        30260.0
+      ]
+    },
+    "known_categories": [
+      "Audio & Headphones",
+      "Cameras",
+      "Home Appliances",
+      "Laptops",
+      "Smartphones",
+      "Smartwatches & Wearables",
+      "Tablets",
+      "Televisions"
     ],
-    "rating": [
-      3.4,
-      4.9
-    ],
-    "review_count": [
-      67.0,
-      30260.0
+    "known_brands": [
+      "ASUS",
+      "Amazfit",
+      "Apple",
+      "Bosch",
+      "Bose",
+      "Canon",
+      "Dell",
+      "Dyson",
+      "Fitbit",
+      "Fujifilm",
+      "Garmin",
+      "Google",
+      "HP",
+      "IFB",
+      "JBL",
+      "LG",
+      "Lenovo",
+      "Mi",
+      "Nikon",
+      "Noise",
+      "OnePlus",
+      "Panasonic",
+      "Philips",
+      "Realme",
+      "Samsung",
+      "Sennheiser",
+      "Sony",
+      "TCL",
+      "Xiaomi",
+      "boAt"
     ]
   },
   "model_comparison": {
@@ -187,6 +231,67 @@
       33034.1
     ]
   },
-  "feature_importances": [],
+  "feature_importances": [
+    {
+      "feature": "original_price",
+      "importance": 0.197
+    },
+    {
+      "feature": "category_Televisions",
+      "importance": 0.0905
+    },
+    {
+      "feature": "brand_Mi",
+      "importance": 0.0846
+    },
+    {
+      "feature": "brand_Nikon",
+      "importance": 0.0548
+    },
+    {
+      "feature": "brand_Panasonic",
+      "importance": 0.0456
+    },
+    {
+      "feature": "category_Cameras",
+      "importance": 0.0389
+    },
+    {
+      "feature": "category_Audio & Headphones",
+      "importance": 0.0357
+    },
+    {
+      "feature": "brand_Philips",
+      "importance": 0.0357
+    },
+    {
+      "feature": "brand_LG",
+      "importance": 0.0329
+    },
+    {
+      "feature": "brand_Canon",
+      "importance": 0.0323
+    },
+    {
+      "feature": "brand_Sennheiser",
+      "importance": 0.0289
+    },
+    {
+      "feature": "brand_Fitbit",
+      "importance": 0.0258
+    },
+    {
+      "feature": "brand_Dyson",
+      "importance": 0.0257
+    },
+    {
+      "feature": "brand_TCL",
+      "importance": 0.0241
+    },
+    {
+      "feature": "brand_Apple",
+      "importance": 0.0217
+    }
+  ],
   "random_seed": 42
 }

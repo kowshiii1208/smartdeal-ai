@@ -59,20 +59,36 @@ def validate_inference_input(
 
     # Check bounds against training distributions if provided
     if training_bounds and not errors:
+        # Extract numerical bounds (support both nested dict and flat dict formats)
+        num_bounds = training_bounds.get("numerical", training_bounds) if isinstance(training_bounds, dict) else {}
+        
         for num_feat in ["original_price", "rating", "review_count"]:
-            if num_feat in training_bounds and num_feat in input_data:
-                min_val, max_val = training_bounds[num_feat]
-                val = float(input_data[num_feat])
-                if val < min_val:
-                    warnings.append(
-                        f"Value for '{num_feat}' ({val}) is lower than the minimum observed in training data ({min_val}). "
-                        f"Model predictions may have lower confidence."
-                    )
-                elif val > max_val:
-                    warnings.append(
-                        f"Value for '{num_feat}' ({val}) is higher than the maximum observed in training data ({max_val}). "
-                        f"Model extrapolation may occur."
-                    )
+            if num_feat in num_bounds and num_feat in input_data:
+                bound_val = num_bounds[num_feat]
+                if isinstance(bound_val, (list, tuple)) and len(bound_val) == 2:
+                    min_val, max_val = bound_val
+                    val = float(input_data[num_feat])
+                    if val < min_val:
+                        warnings.append(
+                            f"Value for '{num_feat}' ({val:,.0f}) is lower than minimum training data ({min_val:,.0f}). Extrapolation may occur."
+                        )
+                    elif val > max_val:
+                        warnings.append(
+                            f"Value for '{num_feat}' ({val:,.0f}) is higher than maximum training data ({max_val:,.0f}). Extrapolation may occur."
+                        )
+
+        # Check for unobserved categorical inputs (Out-of-Distribution categories and brands)
+        known_cats = training_bounds.get("known_categories") if isinstance(training_bounds, dict) else None
+        if known_cats and input_data.get("category") not in known_cats:
+            warnings.append(
+                f"Category '{input_data.get('category')}' was not in training dataset. Inference will use baseline category weights."
+            )
+
+        known_brands = training_bounds.get("known_brands") if isinstance(training_bounds, dict) else None
+        if known_brands and input_data.get("brand") not in known_brands:
+            warnings.append(
+                f"Brand '{input_data.get('brand')}' was not observed during training. Valuation will rely on category and MSRP features."
+            )
 
     return len(errors) == 0, errors, warnings
 

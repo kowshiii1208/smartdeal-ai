@@ -78,3 +78,42 @@ def test_chronological_holdout_evaluation():
     assert "Linear Trend" in metrics
     assert "mae" in metrics["Linear Trend"]
     assert "rmse" in metrics["Linear Trend"]
+
+
+def test_adaptive_holdout_for_small_series():
+    """Verify that a short time series (5 observations) successfully evaluates chronological holdout."""
+    dates = [(datetime(2026, 10, 1) + timedelta(days=i * 2)).strftime("%Y-%m-%d") for i in range(5)]
+    prices = [40000, 39500, 39000, 38800, 38500]
+
+    history_df = pd.DataFrame({
+        "product_id": ["P-SHORT"] * 5,
+        "observed_date": dates,
+        "price": prices,
+    })
+
+    metrics = evaluate_forecast_on_holdout(history_df)
+    assert len(metrics) == 3
+    assert "Naïve Persistence" in metrics
+    assert "Linear Trend" in metrics
+    assert metrics["Linear Trend"]["mae"] >= 0
+
+
+def test_forecast_confidence_interval_widening():
+    """Verify that statistical confidence interval width increases into the future horizon."""
+    dates = [(datetime(2026, 9, 1) + timedelta(days=i * 3)).strftime("%Y-%m-%d") for i in range(12)]
+    prices = [50000 + (i * 100) + (50 if i % 2 == 0 else -50) for i in range(12)]
+
+    history_df = pd.DataFrame({
+        "product_id": ["P-WIDE"] * 12,
+        "observed_date": dates,
+        "price": prices,
+    })
+
+    forecast_res = generate_price_forecast(history_df, horizon_days=14)
+    upper = forecast_res["upper_bounds"]
+    lower = forecast_res["lower_bounds"]
+
+    widths = [u - l for u, l in zip(upper, lower)]
+    # As horizon extends, uncertainty width should generally expand or stay constant due to rounding
+    assert widths[-1] >= widths[0]
+

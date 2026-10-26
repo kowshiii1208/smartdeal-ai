@@ -83,10 +83,17 @@ def predict_fair_price(input_data: Dict[str, Any]) -> Dict[str, Any]:
 
     # Format into DataFrame
     df_input = create_inference_dataframe(input_data)
+    orig_price = float(input_data["original_price"])
 
     # Inference
     raw_pred = pipeline.predict(df_input)[0]
-    predicted_price = round(max(0.0, float(raw_pred)), -1)
+
+    # Enforce physical domain constraints:
+    # A fair reference price cannot be negative, near zero, or exceed original price (MSRP)
+    min_physical = orig_price * 0.10
+    max_physical = orig_price * 0.98
+    bounded_pred = max(min_physical, min(max_physical, float(raw_pred)))
+    predicted_price = round(bounded_pred, -1)
 
     # Compute expected tolerance band using model RMSE
     best_model_name = metrics.get("best_model_name", "Trained ML Model")
@@ -95,18 +102,25 @@ def predict_fair_price(input_data: Dict[str, Any]) -> Dict[str, Any]:
     mae = model_stats.get("mae", predicted_price * 0.04)
     r2 = model_stats.get("r2", 0.85)
 
-    min_expected = max(0.0, round(predicted_price - rmse, -1))
-    max_expected = round(min(input_data["original_price"], predicted_price + rmse), -1)
+    # Dynamic Uncertainty Inflation for Out-of-Distribution (OOD) inputs
+    # If the input was extrapolated beyond training bounds or contains unseen categories/brands,
+    # expand the uncertainty tolerance band by 35% per warning.
+    is_ood = len(warnings) > 0
+    inflation_factor = 1.0 + (0.35 * len(warnings))
+    effective_rmse = round(rmse * inflation_factor, 1)
+
+    min_expected = max(min_physical, round(predicted_price - effective_rmse, -1))
+    max_expected = min(orig_price, round(predicted_price + effective_rmse, -1))
 
     # Explanation factors
-    orig_price = float(input_data["original_price"])
     implied_discount_pct = round(((orig_price - predicted_price) / orig_price) * 100, 1)
 
     factors = {
         "original_price": orig_price,
         "implied_fair_discount_pct": implied_discount_pct,
         "rating_impact": "Positive (above 4.2★)" if float(input_data.get("rating", 4.0)) >= 4.2 else "Moderate/Standard",
-        "market_confidence": "High" if r2 > 0.80 else "Moderate",
+        "market_confidence": "High (In-Domain)" if not is_ood and r2 > 0.80 else ("Moderate" if not is_ood else "Cautious (OOD Extrapolation)"),
+        "uncertainty_status": "Standard (In-Distribution)" if not is_ood else f"Inflated (±Rs.{effective_rmse:,.0f} due to {len(warnings)} extrapolation warning(s))",
     }
 
     return {
@@ -116,7 +130,10 @@ def predict_fair_price(input_data: Dict[str, Any]) -> Dict[str, Any]:
         "model_name": best_model_name,
         "mae": mae,
         "rmse": rmse,
+        "effective_rmse": effective_rmse,
+        "is_ood": is_ood,
         "r2": r2,
         "warnings": warnings,
         "factors": factors,
     }
+

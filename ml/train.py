@@ -68,16 +68,18 @@ def train_and_evaluate_models(
     logger.info("Preparing features and target...")
     X, y = prepare_features_and_target(df, target_col=TARGET_VARIABLE)
 
-    # Calculate training feature bounds for inference sanity checking
-    training_bounds = {}
-    for col in NUMERICAL_FEATURES:
-        training_bounds[col] = (float(X[col].min()), float(X[col].max()))
-
     # Train/Test Split (80/20) with reproducible random seed
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=RANDOM_SEED
     )
     logger.info(f"Split data into {len(X_train)} training and {len(X_test)} testing records.")
+
+    # Calculate training feature bounds strictly from X_train to prevent data leakage
+    training_bounds = {
+        "numerical": {col: (float(X_train[col].min()), float(X_train[col].max())) for col in NUMERICAL_FEATURES},
+        "known_categories": sorted(X_train["category"].dropna().unique().tolist()),
+        "known_brands": sorted(X_train["brand"].dropna().unique().tolist()),
+    }
 
     preprocessor = build_preprocessor()
 
