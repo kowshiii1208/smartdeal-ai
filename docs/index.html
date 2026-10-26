@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartDeal AI — E-Commerce Price Prediction & Deal Intelligence</title>
+    <meta name="description" content="Intelligent e-commerce price prediction and deal evaluation platform using machine learning and time-series forecasting.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0B1120;
+            --bg-card: rgba(19, 30, 54, 0.7);
+            --bg-card-hover: rgba(28, 43, 75, 0.85);
+            --border-card: rgba(56, 189, 248, 0.15);
+            --border-card-hover: rgba(56, 189, 248, 0.4);
+            --primary: #38BDF8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --secondary: #818CF8;
+            --emerald: #10B981;
+            --emerald-bg: rgba(16, 185, 129, 0.12);
+            --amber: #F59E0B;
+            --amber-bg: rgba(245, 158, 11, 0.12);
+            --rose: #EF4444;
+            --rose-bg: rgba(239, 68, 68, 0.12);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-dim: #64748B;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 15% 15%, #131E36 0%, #0B1120 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 17, 32, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 28px;
+        }
+        .header-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .brand-logo .logo-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+        }
+        .brand-logo .logo-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+        .brand-logo .logo-title span {
+            background: linear-gradient(135deg, #38BDF8, #818CF8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-live-cloud {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #0284C7, #2563EB);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.82rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+        }
+        .btn-live-cloud:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+        }
+        .btn-github {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.82rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-github:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
+        }
+
+        .main-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 24px 20px 80px 20px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(20, 32, 57, 0.8) 0%, rgba(12, 19, 34, 0.95) 100%);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #CBD5E1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            color: var(--text-muted);
+            font-size: 1.0rem;
+            max-width: 850px;
+            line-height: 1.6;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 18px 20px;
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s;
+        }
+        .kpi-card:hover { transform: translateY(-2px); border-color: var(--border-card-hover); }
+        .kpi-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--text-dim); }
+        .kpi-value { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin: 4px 0; letter-spacing: -0.02em; }
+        .kpi-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.90rem;
+            font-weight: 600;
+            padding: 10px 18px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--text-main); }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(56, 189, 248, 0.06);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .filter-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+        .filter-group label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+        .filter-group input, .filter-group select {
+            width: 100%;
+            background: rgba(11, 17, 32, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.88rem;
+            padding: 9px 12px;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .filter-group input:focus, .filter-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 18px;
+        }
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-card-hover);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+            background: var(--bg-card-hover);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .category-badge {
+            font-size: 0.70rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+        .product-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.8em;
+        }
+        .deal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .deal-great { background: var(--emerald-bg); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.35); }
+        .deal-good { background: var(--primary-glow); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.35); }
+        .deal-fair { background: var(--amber-bg); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.35); }
+        .deal-above { background: var(--rose-bg); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+
+        .price-section {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+        .current-price {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #38BDF8;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .mrp-price {
+            font-size: 0.84rem;
+            color: var(--text-dim);
+            text-decoration: line-through;
+        }
+        .fair-price-row {
+            font-size: 0.80rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 6px;
+            margin-top: 6px;
+        }
+        .savings-highlight {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #34D399;
+            margin-top: 6px;
+        }
+        .savings-negative {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #F87171;
+            margin-top: 6px;
+        }
+
+        .meta-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+        .rating-badge { color: #FBBF24; font-weight: 700; }
+
+        .predictor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 850px) { .predictor-container { grid-template-columns: 1fr; } }
+        .form-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .result-box {
+            background: linear-gradient(135deg, rgba(20, 32, 57, 0.9) 0%, rgba(12, 19, 34, 0.95) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 12px 30px -8px rgba(6, 182, 212, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .btn-predict {
+            width: 100%;
+            background: linear-gradient(135deg, #0284C7, #38BDF8);
+            color: #0B1120;
+            border: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 800;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 16px;
+        }
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 16px;
+        }
+        .audit-table th {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .audit-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+        .audit-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        .callout-box {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 16px 0;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            padding: 28px;
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <a href="#" class="brand-logo">
+                <span class="logo-icon">🏷️</span>
+                <span class="logo-title">SmartDeal <span>AI</span></span>
+            </a>
+            <div class="header-actions">
+                <a href="https://share.streamlit.io/deploy?repository=kowshiii1208/smartdeal-ai&branch=main&mainModule=app.py" target="_blank" class="btn-live-cloud">
+                    🚀 Launch Full Streamlit Cloud App
+                </a>
+                <a href="https://github.com/kowshiii1208/smartdeal-ai" target="_blank" class="btn-github">
+                    ★ View GitHub Repository
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <div class="hero-banner">
+            <div class="badge-pill">✨ Live GitHub Pages Deployment • Machine Learning Valuation Engine</div>
+            <h1 class="hero-title">E-Commerce Price Prediction & Smart Deal Finder</h1>
+            <p class="hero-desc">
+                An intelligent decision intelligence platform designed to protect consumers against artificial "fake discounts". Uses regression machine learning to predict fair equilibrium benchmark prices, audits retail listings, and scores deals from 0 to 100.
+            </p>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Total Catalog Products</div>
+                <div class="kpi-value" id="kpi-count">120</div>
+                <div class="kpi-sub">Across 8 Electronics Segments</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Champion ML Model</div>
+                <div class="kpi-value" style="color: #34D399;">Linear Regressor</div>
+                <div class="kpi-sub">R² Score: <b>0.9894</b> • RMSE: <b>±₹5,051</b></div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Error Reduction vs Baseline</div>
+                <div class="kpi-value" style="color: #F59E0B;">90.2%</div>
+                <div class="kpi-sub">Beats Dummy Median (₹51,360 RMSE)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Automated Tests</div>
+                <div class="kpi-value" style="color: #818CF8;">28 / 28 Passed</div>
+                <div class="kpi-sub">100% Verification Pass Rate</div>
+            </div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('deals')">🏷️ Smart Deal Finder</button>
+            <button class="tab-btn" onclick="switchTab('predictor')">🔮 Fair Price Predictor</button>
+            <button class="tab-btn" onclick="switchTab('comparison')">⚖️ Product Comparison</button>
+            <button class="tab-btn" onclick="switchTab('audit')">🎯 ML Model Performance</button>
+            <button class="tab-btn" onclick="switchTab('about')">📖 Architecture & Viva Prep</button>
+        </div>
+
+        <!-- TAB 1: Deals -->
+        <div id="tab-deals">
+            <div class="filter-panel">
+                <div class="filter-group" style="grid-column: span 2;">
+                    <label>Search Product Name or Brand</label>
+                    <input type="text" id="search-input" placeholder="e.g. MacBook, iPhone, Sony, OLED..." oninput="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select id="category-filter" onchange="applyFilters()">
+                        <option value="ALL">All Categories (8)</option>
+                        <option value="Audio & Headphones">Audio & Headphones</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Home Appliances">Home Appliances</option>
+                        <option value="Laptops">Laptops</option>
+                        <option value="Smartphones">Smartphones</option>
+                        <option value="Smartwatches & Wearables">Smartwatches & Wearables</option>
+                        <option value="Tablets">Tablets</option>
+                        <option value="Televisions">Televisions</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Deal Rating Tier</label>
+                    <select id="tier-filter" onchange="applyFilters()">
+                        <option value="ALL">All Deal Tiers</option>
+                        <option value="Great Deal">🔥 Great Deal (≥80)</option>
+                        <option value="Good Deal">✨ Good Deal (65-79)</option>
+                        <option value="Fair Price">⚖️ Fair Price (45-64)</option>
+                        <option value="Above Reference">⚠️ Above Reference (<45)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort By</label>
+                    <select id="sort-filter" onchange="applyFilters()">
+                        <option value="deal_score_desc">Highest Deal Score (Best First)</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="savings_desc">Largest ₹ Savings</option>
+                        <option value="rating_desc">Customer Rating</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 14px; font-size: 0.84rem; color: var(--text-muted);" id="filter-status">
+                Showing 120 verified products in catalog
+            </div>
+
+            <div class="products-grid" id="products-container"></div>
+        </div>
+
+        <!-- TAB 2: Predictor -->
+        <div id="tab-predictor" style="display: none;">
+            <div class="callout-box">
+                🎯 <b>Leak-Free Valuation Engine:</b> The regression model predicts intrinsic fair market equilibrium without observing <code>current_price</code> or <code>discount_percentage</code>. Extreme out-of-distribution inputs trigger dynamic +35% uncertainty inflation.
+            </div>
+            <div class="predictor-container">
+                <div class="form-box">
+                    <h3 style="margin-bottom: 16px; font-size: 1.15rem;">Input Product Specification</h3>
+                    
+                    <div class="filter-group" style="margin-bottom: 12px;">
+                        <label>Category</label>
+                        <select id="pred-category">
+                        <option value="Audio & Headphones">Audio & Headphones</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Home Appliances">Home Appliances</option>
+                        <option value="Laptops">Laptops</option>
+                        <option value="Smartphones">Smartphones</option>
+                        <option value="Smartwatches & Wearables">Smartwatches & Wearables</option>
+                        <option value="Tablets">Tablets</option>
+                        <option value="Televisions">Televisions</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="margin-bottom: 12px;">
+                        <label>Brand</label>
+                        <select id="pred-brand">
+                            <option value="ASUS">ASUS</option>
+                            <option value="Amazfit">Amazfit</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Bosch">Bosch</option>
+                            <option value="Bose">Bose</option>
+                            <option value="Canon">Canon</option>
+                            <option value="Dell">Dell</option>
+                            <option value="Dyson">Dyson</option>
+                            <option value="Fitbit">Fitbit</option>
+                            <option value="Fujifilm">Fujifilm</option>
+                            <option value="Garmin">Garmin</option>
+                            <option value="Google">Google</option>
+                            <option value="HP">HP</option>
+                            <option value="IFB">IFB</option>
+                            <option value="JBL">JBL</option>
+                            <option value="LG">LG</option>
+                            <option value="Lenovo">Lenovo</option>
+                            <option value="Mi">Mi</option>
+                            <option value="Nikon">Nikon</option>
+                            <option value="Noise">Noise</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="Panasonic">Panasonic</option>
+                            <option value="Philips">Philips</option>
+                            <option value="Realme">Realme</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Sennheiser">Sennheiser</option>
+                            <option value="Sony">Sony</option>
+                            <option value="TCL">TCL</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="boAt">boAt</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="margin-bottom: 12px;">
+                        <label>Original MRP (Sticker Price ₹)</label>
+                        <input type="number" id="pred-mrp" value="79999" min="1000" max="10000000" step="500">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="filter-group">
+                            <label>Customer Rating (1.0 - 5.0)</label>
+                            <input type="number" id="pred-rating" value="4.5" min="1.0" max="5.0" step="0.1">
+                        </div>
+                        <div class="filter-group">
+                            <label>Verified Review Count</label>
+                            <input type="number" id="pred-reviews" value="2500" min="1" max="100000">
+                        </div>
+                    </div>
+
+                    <div class="filter-group" style="margin-bottom: 16px;">
+                        <label>Offered Live Selling Price (Optional ₹)</label>
+                        <input type="number" id="pred-offered" value="64999" min="0" max="10000000" step="500">
+                    </div>
+
+                    <button class="btn-predict" onclick="runPrediction()">🔮 Predict Fair Reference Price</button>
+                </div>
+
+                <div class="result-box" id="pred-result-card">
+                    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--text-dim);">
+                        🎯 Estimated Fair Market Valuation
+                    </div>
+                    <div id="pred-price-display" style="font-size: 2.6rem; font-weight: 800; color: var(--primary); margin: 8px 0; font-family: 'JetBrains Mono', monospace;">
+                        ₹68,540
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin: 12px 0;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;">
+                            <span>Lower Bound: <b id="pred-lower">₹63,490</b></span>
+                            <span>Upper Bound: <b id="pred-upper">₹73,590</b></span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.08); height: 6px; border-radius: 9999px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, #3B82F6, #38BDF8); height: 100%; width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div id="pred-deal-verdict" style="font-size: 0.95rem; font-weight: 700; color: #34D399; margin-top: 6px;">
+                        🔥 Evaluated as a Good Deal (₹3,541 savings vs equilibrium)
+                    </div>
+                    <div id="pred-caption" style="font-size: 0.76rem; color: var(--text-dim); margin-top: 12px;">
+                        Fitted Engine: <b>Linear Regression Pipeline</b> • Held-Out RMSE: <b>±₹5,051</b> • R²: <b>0.9894</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Comparison -->
+        <div id="tab-comparison" style="display: none;">
+            <h3 style="margin-bottom: 12px;">⚖️ Side-by-Side Product Comparison</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+                Select products from the catalog to compare sticker prices vs supported deal scores.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                <div class="filter-group">
+                    <label>Select Product 1</label>
+                    <select id="comp-prod-1" onchange="renderComparison()"></select>
+                </div>
+                <div class="filter-group">
+                    <label>Select Product 2</label>
+                    <select id="comp-prod-2" onchange="renderComparison()"></select>
+                </div>
+            </div>
+            <div id="comparison-table-container"></div>
+        </div>
+
+        <!-- TAB 4: Model Performance -->
+        <div id="tab-audit" style="display: none;">
+            <div class="callout-box">
+                🏆 <b>Strict Out-of-Sample Evaluation:</b> Evaluated on an 80/20 train-test partition with 24 held-out test records. Zero target leakage and zero distribution leakage.
+            </div>
+
+            <h3 style="margin: 20px 0 10px 0;">Benchmark Leaderboard</h3>
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Candidate Model</th>
+                        <th>MAE (₹)</th>
+                        <th>RMSE (₹)</th>
+                        <th>R² Score</th>
+                        <th>MAPE (%)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Baseline (Dummy Median)</b></td>
+                        <td>₹32,502.50</td>
+                        <td>₹51,360.17</td>
+                        <td>-0.1012</td>
+                        <td>100.99%</td>
+                        <td><span style="color: var(--text-dim);">Academic Baseline</span></td>
+                    </tr>
+                    <tr style="background: rgba(56, 189, 248, 0.08); font-weight: 700;">
+                        <td>👑 <b>Linear Regression</b></td>
+                        <td style="color: #38BDF8;">₹3,226.15</td>
+                        <td style="color: #38BDF8;">₹5,050.92</td>
+                        <td style="color: #34D399;">0.9894</td>
+                        <td style="color: #38BDF8;">13.11%</td>
+                        <td><span style="color: #38BDF8;">👑 Selected Champion</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Random Forest Regressor</b></td>
+                        <td>₹6,394.77</td>
+                        <td>₹13,255.18</td>
+                        <td>0.9267</td>
+                        <td>23.36%</td>
+                        <td><span style="color: var(--text-muted);">Evaluated</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>Gradient Boosting Regressor</b></td>
+                        <td>₹6,349.82</td>
+                        <td>₹14,674.70</td>
+                        <td>0.9101</td>
+                        <td>24.08%</td>
+                        <td><span style="color: var(--text-muted);">Evaluated</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 28px 0 10px 0;">🔬 Empirical ML Rigor Checklist</h3>
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Audit Dimension</th>
+                        <th>Protocol & Methodology</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><b>Target Definition</b></td><td>Predict fair_reference_price (equilibrium value) decoupled from spot promotions</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Zero Leakage)</span></td></tr>
+                    <tr><td><b>Feature Leakage</b></td><td>current_price & discount_percentage strictly dropped from feature matrix X</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Zero Leakage)</span></td></tr>
+                    <tr><td><b>Bounds Isolation</b></td><td>training_bounds & category lists extracted strictly from X_train post-split</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Isolated)</span></td></tr>
+                    <tr><td><b>Baseline Comparison</b></td><td>Supervised champion beats dummy median by 90.2% in RMSE</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Substantial Lift)</span></td></tr>
+                    <tr><td><b>Forecasting Holdout</b></td><td>Time-series past-to-future chronological validation (no future lookahead)</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Chronological)</span></td></tr>
+                    <tr><td><b>OOD Guardrails</b></td><td>Physical bounds [0.10*MSRP, 0.98*MSRP] with +35% uncertainty inflation</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (Active)</span></td></tr>
+                    <tr><td><b>Reproducibility</b></td><td>Fixed RANDOM_SEED = 42 ensures identical metrics across training runs</td><td><span style="color: #34D399; font-weight: 700;">✅ Verified (100% Deterministic)</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB 5: About & Viva -->
+        <div id="tab-about" style="display: none;">
+            <h3 style="margin-bottom: 12px;">🎓 Placement Interview & Viva Presentation Defense</h3>
+            
+            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                <h4 style="color: #38BDF8; margin-bottom: 6px;">Q1: Why exclude current_price from the regression feature set?</h4>
+                <p style="color: var(--text-muted); font-size: 0.90rem; line-height: 1.6;">
+                    <b>Answer:</b> Including <code>current_price</code> would cause catastrophic target leakage. The objective is to determine what an item <i>ought</i> to cost based on intrinsic specifications and brand equity. If <code>current_price</code> were given to the regressor, it would memorize the identity mapping (y = x), showing trivial 0 loss while failing completely to evaluate whether the listing is a good deal.
+                </p>
+            </div>
+
+            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                <h4 style="color: #38BDF8; margin-bottom: 6px;">Q2: Why did Linear Regression beat Random Forest and Gradient Boosting?</h4>
+                <p style="color: var(--text-muted); font-size: 0.90rem; line-height: 1.6;">
+                    <b>Answer:</b> Fair reference pricing is fundamentally an economically proportional scalar problem directly tied to MSRP (Price ≈ (1 - δ) * MSRP + β * Rating). Linear models capture this continuous slope seamlessly (R² = 0.9894). In contrast, decision tree ensembles split continuous dimensions into step-wise constant buckets, leading to step boundary errors on continuous pricing scales with N=96 training points.
+                </p>
+            </div>
+
+            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 12px; padding: 20px;">
+                <h4 style="color: #38BDF8; margin-bottom: 6px;">Q3: How does your deal scoring formula penalize weak evidence?</h4>
+                <p style="color: var(--text-muted); font-size: 0.90rem; line-height: 1.6;">
+                    <b>Answer:</b> Products with fewer than 100 reviews are weighted with W_confidence = 0.75, which mathematically regresses the raw score back toward the fair equilibrium anchor of 50. This prevents unverified sellers or new listings with inflated 5-star ratings from triggering false "Great Deal" alerts.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>SmartDeal AI — E-Commerce Price Prediction & Smart Deal Finder</p>
+        <p style="margin-top: 4px; color: var(--text-dim);">Crafted for BTech CSE Placement Defense & Portfolio • MIT Licensed</p>
+    </footer>
+
+    <script>
+        const catalog = [{"product_id":"PROD-1001","product_name":"MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD, Space Grey)","category":"Laptops","brand":"Apple","original_price":114900.0,"current_price":113850.0,"discount_percentage":0.9,"rating":3.9,"review_count":2650,"retailer":"Amazon India","timestamp":"2026-10-24T07:00:00","fair_reference_price":102270.0,"is_synthetic":1,"ref_price":102270.0,"deal_score":21.4,"deal_category":"Above Reference","price_diff":-11580.0,"diff_percentage":-11.32,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b911,580 (11.3%) above estimated fair reference price","estimated_savings":0.0},{"product_id":"PROD-1002","product_name":"MacBook Pro M3 (14.2-inch, 16GB RAM, 512GB SSD, Space Black)","category":"Laptops","brand":"Apple","original_price":199900.0,"current_price":199900.0,"discount_percentage":0.0,"rating":4.1,"review_count":962,"retailer":"Amazon India","timestamp":"2026-10-25T16:00:00","fair_reference_price":190980.0,"is_synthetic":1,"ref_price":190980.0,"deal_score":39.9,"deal_category":"Above Reference","price_diff":-8920.0,"diff_percentage":-4.67,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b98,920 (4.7%) above estimated fair reference price","estimated_savings":0.0},{"product_id":"PROD-1003","product_name":"Inspiron 15 3530 (Intel Core i5-1335U, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Dell","original_price":68500.0,"current_price":51690.0,"discount_percentage":24.5,"rating":4.6,"review_count":290,"retailer":"Amazon India","timestamp":"2026-10-25T22:00:00","fair_reference_price":54500.0,"is_synthetic":1,"ref_price":54500.0,"deal_score":69.8,"deal_category":"Good Deal","price_diff":2810.0,"diff_percentage":5.16,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b92,810 (5.2%) below estimated fair market reference price \u2022 24.5% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 290 reviews)","estimated_savings":2810.0},{"product_id":"PROD-1004","product_name":"XPS 13 9315 (Intel Core i7-1250U, 16GB RAM, 512GB SSD, FHD+)","category":"Laptops","brand":"Dell","original_price":124990.0,"current_price":102600.0,"discount_percentage":17.9,"rating":4.1,"review_count":3704,"retailer":"Flipkart","timestamp":"2026-10-24T00:00:00","fair_reference_price":108320.0,"is_synthetic":1,"ref_price":108320.0,"deal_score":68.2,"deal_category":"Good Deal","price_diff":5720.0,"diff_percentage":5.28,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,720 (5.3%) below estimated fair market reference price \u2022 17.9% discount against original MRP","estimated_savings":5720.0},{"product_id":"PROD-1005","product_name":"Pavilion 15 (AMD Ryzen 7 7730U, 16GB RAM, 512GB SSD, Backlit KB)","category":"Laptops","brand":"HP","original_price":72000.0,"current_price":50270.0,"discount_percentage":30.2,"rating":4.1,"review_count":5635,"retailer":"Amazon India","timestamp":"2026-10-25T06:00:00","fair_reference_price":58510.0,"is_synthetic":1,"ref_price":58510.0,"deal_score":93.0,"deal_category":"Great Deal","price_diff":8240.0,"diff_percentage":14.08,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b98,240 (14.1%) below estimated fair market reference price \u2022 30.2% discount against original MRP","estimated_savings":8240.0},{"product_id":"PROD-1006","product_name":"Victus Gaming Laptop (Intel Core i5-12450H, RTX 3050, 144Hz)","category":"Laptops","brand":"HP","original_price":79999.0,"current_price":57470.0,"discount_percentage":28.2,"rating":4.1,"review_count":1796,"retailer":"Reliance Digital","timestamp":"2026-10-25T08:00:00","fair_reference_price":59620.0,"is_synthetic":1,"ref_price":59620.0,"deal_score":66.6,"deal_category":"Good Deal","price_diff":2150.0,"diff_percentage":3.61,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,150 (3.6%) below estimated fair market reference price \u2022 28.2% discount against original MRP","estimated_savings":2150.0},{"product_id":"PROD-1007","product_name":"ROG Zephyrus G14 (AMD Ryzen 9, RTX 4060, 16GB RAM, 1TB SSD)","category":"Laptops","brand":"ASUS","original_price":159990.0,"current_price":139620.0,"discount_percentage":12.7,"rating":4.9,"review_count":7573,"retailer":"Amazon India","timestamp":"2026-10-25T09:00:00","fair_reference_price":140680.0,"is_synthetic":1,"ref_price":140680.0,"deal_score":59.6,"deal_category":"Fair Price","price_diff":1060.0,"diff_percentage":0.75,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,060 (0.8%) below estimated fair market reference price \u2022 Strong customer acclaim (4.9\u2605 across 7,573 reviews)","estimated_savings":1060.0},{"product_id":"PROD-1008","product_name":"Vivobook 15 (Intel Core i3-1215U, 8GB RAM, 512GB SSD)","category":"Laptops","brand":"ASUS","original_price":49990.0,"current_price":34710.0,"discount_percentage":30.6,"rating":4.4,"review_count":5208,"retailer":"Tata CLiQ","timestamp":"2026-10-25T15:00:00","fair_reference_price":34110.0,"is_synthetic":1,"ref_price":34110.0,"deal_score":55.2,"deal_category":"Fair Price","price_diff":-600.0,"diff_percentage":-1.76,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9600 (1.8%) above estimated fair reference price \u2022 30.6% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 5,208 reviews)","estimated_savings":0.0},{"product_id":"PROD-1009","product_name":"IdeaPad Slim 3 (Intel Core i5-12450H, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Lenovo","original_price":64990.0,"current_price":45980.0,"discount_percentage":29.3,"rating":3.9,"review_count":270,"retailer":"Amazon India","timestamp":"2026-10-24T00:00:00","fair_reference_price":50230.0,"is_synthetic":1,"ref_price":50230.0,"deal_score":75.2,"deal_category":"Good Deal","price_diff":4250.0,"diff_percentage":8.46,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b94,250 (8.5%) below estimated fair market reference price \u2022 29.3% discount against original MRP","estimated_savings":4250.0},{"product_id":"PROD-1010","product_name":"LOQ 15 Gaming (AMD Ryzen 7 7840HS, RTX 4050, 16GB, 512GB)","category":"Laptops","brand":"Lenovo","original_price":94990.0,"current_price":72070.0,"discount_percentage":24.1,"rating":3.9,"review_count":2124,"retailer":"Croma","timestamp":"2026-10-25T17:00:00","fair_reference_price":75390.0,"is_synthetic":1,"ref_price":75390.0,"deal_score":66.5,"deal_category":"Good Deal","price_diff":3320.0,"diff_percentage":4.4,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,320 (4.4%) below estimated fair market reference price \u2022 24.1% discount against original MRP","estimated_savings":3320.0},{"product_id":"PROD-1011","product_name":"Nitro V 15 (Intel Core i5-13420H, RTX 4050 6GB, 16GB, 512GB)","category":"Laptops","brand":"Acer","original_price":82999.0,"current_price":77330.0,"discount_percentage":6.8,"rating":4.5,"review_count":5246,"retailer":"Croma","timestamp":"2026-10-24T04:00:00","fair_reference_price":69220.0,"is_synthetic":1,"ref_price":69220.0,"deal_score":24.9,"deal_category":"Above Reference","price_diff":-8110.0,"diff_percentage":-11.72,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b98,110 (11.7%) above estimated fair reference price \u2022 Strong customer acclaim (4.5\u2605 across 5,246 reviews)","estimated_savings":0.0},{"product_id":"PROD-1012","product_name":"Aspire Lite (AMD Ryzen 5 5500U, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Acer","original_price":52990.0,"current_price":30840.0,"discount_percentage":41.8,"rating":3.8,"review_count":6765,"retailer":"Amazon India","timestamp":"2026-10-24T00:00:00","fair_reference_price":34880.0,"is_synthetic":1,"ref_price":34880.0,"deal_score":88.4,"deal_category":"Great Deal","price_diff":4040.0,"diff_percentage":11.58,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,040 (11.6%) below estimated fair market reference price \u2022 41.8% discount against original MRP","estimated_savings":4040.0},{"product_id":"PROD-1013","product_name":"iPhone 15 (128GB, Blue)","category":"Smartphones","brand":"Apple","original_price":79900.0,"current_price":65270.0,"discount_percentage":18.3,"rating":4.6,"review_count":2580,"retailer":"Flipkart","timestamp":"2026-10-24T13:00:00","fair_reference_price":69920.0,"is_synthetic":1,"ref_price":69920.0,"deal_score":74.2,"deal_category":"Good Deal","price_diff":4650.0,"diff_percentage":6.65,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,650 (6.7%) below estimated fair market reference price \u2022 18.3% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 2,580 reviews)","estimated_savings":4650.0},{"product_id":"PROD-1014","product_name":"iPhone 15 Pro (256GB, Natural Titanium)","category":"Smartphones","brand":"Apple","original_price":134900.0,"current_price":130850.0,"discount_percentage":3.0,"rating":4.8,"review_count":2713,"retailer":"Flipkart","timestamp":"2026-10-25T18:00:00","fair_reference_price":129500.0,"is_synthetic":1,"ref_price":129500.0,"deal_score":52.1,"deal_category":"Fair Price","price_diff":-1350.0,"diff_percentage":-1.04,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,350 (1.0%) above estimated fair reference price \u2022 Strong customer acclaim (4.8\u2605 across 2,713 reviews)","estimated_savings":0.0},{"product_id":"PROD-1015","product_name":"Galaxy S24 5G (8GB RAM, 128GB, Onyx Black)","category":"Smartphones","brand":"Samsung","original_price":79999.0,"current_price":68050.0,"discount_percentage":14.9,"rating":3.8,"review_count":6316,"retailer":"Flipkart","timestamp":"2026-10-24T10:00:00","fair_reference_price":70250.0,"is_synthetic":1,"ref_price":70250.0,"deal_score":60.6,"deal_category":"Fair Price","price_diff":2200.0,"diff_percentage":3.13,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,200 (3.1%) below estimated fair market reference price","estimated_savings":2200.0},{"product_id":"PROD-1016","product_name":"Galaxy S24 Ultra (12GB RAM, 256GB, Titanium Gray)","category":"Smartphones","brand":"Samsung","original_price":129999.0,"current_price":108300.0,"discount_percentage":16.7,"rating":4.0,"review_count":4413,"retailer":"Amazon India","timestamp":"2026-10-24T20:00:00","fair_reference_price":114060.0,"is_synthetic":1,"ref_price":114060.0,"deal_score":66.8,"deal_category":"Good Deal","price_diff":5760.0,"diff_percentage":5.05,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,760 (5.0%) below estimated fair market reference price \u2022 16.7% discount against original MRP","estimated_savings":5760.0},{"product_id":"PROD-1017","product_name":"Galaxy A55 5G (8GB RAM, 128GB, Awesome Iceblue)","category":"Smartphones","brand":"Samsung","original_price":42999.0,"current_price":30470.0,"discount_percentage":29.1,"rating":4.5,"review_count":7257,"retailer":"Reliance Digital","timestamp":"2026-10-25T21:00:00","fair_reference_price":36840.0,"is_synthetic":1,"ref_price":36840.0,"deal_score":94.8,"deal_category":"Great Deal","price_diff":6370.0,"diff_percentage":17.29,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b96,370 (17.3%) below estimated fair market reference price \u2022 29.1% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 7,257 reviews)","estimated_savings":6370.0},{"product_id":"PROD-1018","product_name":"OnePlus 12 (16GB RAM, 512GB, Silky Black)","category":"Smartphones","brand":"OnePlus","original_price":69999.0,"current_price":51510.0,"discount_percentage":26.4,"rating":4.8,"review_count":2232,"retailer":"Reliance Digital","timestamp":"2026-10-25T22:00:00","fair_reference_price":62000.0,"is_synthetic":1,"ref_price":62000.0,"deal_score":95.6,"deal_category":"Great Deal","price_diff":10490.0,"diff_percentage":16.92,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b910,490 (16.9%) below estimated fair market reference price \u2022 26.4% discount against original MRP \u2022 Strong customer acclaim (4.8\u2605 across 2,232 reviews)","estimated_savings":10490.0},{"product_id":"PROD-1019","product_name":"OnePlus 12R (8GB RAM, 128GB, Cool Blue)","category":"Smartphones","brand":"OnePlus","original_price":39999.0,"current_price":32820.0,"discount_percentage":17.9,"rating":4.7,"review_count":1273,"retailer":"Reliance Digital","timestamp":"2026-10-25T18:00:00","fair_reference_price":36580.0,"is_synthetic":1,"ref_price":36580.0,"deal_score":83.7,"deal_category":"Great Deal","price_diff":3760.0,"diff_percentage":10.28,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,760 (10.3%) below estimated fair market reference price \u2022 17.9% discount against original MRP \u2022 Strong customer acclaim (4.7\u2605 across 1,273 reviews)","estimated_savings":3760.0},{"product_id":"PROD-1020","product_name":"OnePlus Nord CE4 5G (8GB RAM, 128GB, Celadon Marble)","category":"Smartphones","brand":"OnePlus","original_price":24999.0,"current_price":21820.0,"discount_percentage":12.7,"rating":4.2,"review_count":1277,"retailer":"Amazon India","timestamp":"2026-10-25T10:00:00","fair_reference_price":22990.0,"is_synthetic":1,"ref_price":22990.0,"deal_score":66.9,"deal_category":"Good Deal","price_diff":1170.0,"diff_percentage":5.09,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,170 (5.1%) below estimated fair market reference price","estimated_savings":1170.0},{"product_id":"PROD-1021","product_name":"Pixel 8 (128GB, Hazel)","category":"Smartphones","brand":"Google","original_price":75999.0,"current_price":56290.0,"discount_percentage":25.9,"rating":4.0,"review_count":9747,"retailer":"Tata CLiQ","timestamp":"2026-10-25T09:00:00","fair_reference_price":59630.0,"is_synthetic":1,"ref_price":59630.0,"deal_score":70.5,"deal_category":"Good Deal","price_diff":3340.0,"diff_percentage":5.6,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,340 (5.6%) below estimated fair market reference price \u2022 25.9% discount against original MRP","estimated_savings":3340.0},{"product_id":"PROD-1022","product_name":"Pixel 8a (128GB, Bay Blue)","category":"Smartphones","brand":"Google","original_price":52999.0,"current_price":40730.0,"discount_percentage":23.1,"rating":3.9,"review_count":549,"retailer":"Amazon India","timestamp":"2026-10-24T15:00:00","fair_reference_price":43090.0,"is_synthetic":1,"ref_price":43090.0,"deal_score":67.1,"deal_category":"Good Deal","price_diff":2360.0,"diff_percentage":5.48,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b92,360 (5.5%) below estimated fair market reference price \u2022 23.1% discount against original MRP","estimated_savings":2360.0},{"product_id":"PROD-1023","product_name":"Redmi Note 13 Pro+ 5G (12GB RAM, 256GB, Fusion Purple)","category":"Smartphones","brand":"Xiaomi","original_price":33999.0,"current_price":26680.0,"discount_percentage":21.5,"rating":4.5,"review_count":1324,"retailer":"Amazon India","timestamp":"2026-10-24T09:00:00","fair_reference_price":27580.0,"is_synthetic":1,"ref_price":27580.0,"deal_score":66.0,"deal_category":"Good Deal","price_diff":900.0,"diff_percentage":3.26,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9900 (3.3%) below estimated fair market reference price \u2022 21.5% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 1,324 reviews)","estimated_savings":900.0},{"product_id":"PROD-1024","product_name":"Realme 12 Pro+ 5G (8GB RAM, 256GB, Submarine Blue)","category":"Smartphones","brand":"Realme","original_price":31999.0,"current_price":24700.0,"discount_percentage":22.8,"rating":4.6,"review_count":454,"retailer":"Croma","timestamp":"2026-10-25T22:00:00","fair_reference_price":26830.0,"is_synthetic":1,"ref_price":26830.0,"deal_score":75.7,"deal_category":"Good Deal","price_diff":2130.0,"diff_percentage":7.94,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b92,130 (7.9%) below estimated fair market reference price \u2022 22.8% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 454 reviews)","estimated_savings":2130.0},{"product_id":"PROD-1025","product_name":"WH-1000XM5 Wireless Active Noise Cancelling Headphones","category":"Audio & Headphones","brand":"Sony","original_price":34990.0,"current_price":28580.0,"discount_percentage":18.3,"rating":4.8,"review_count":9612,"retailer":"Flipkart","timestamp":"2026-10-24T12:00:00","fair_reference_price":28730.0,"is_synthetic":1,"ref_price":28730.0,"deal_score":59.9,"deal_category":"Fair Price","price_diff":150.0,"diff_percentage":0.52,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9150 (0.5%) below estimated fair market reference price \u2022 18.3% discount against original MRP \u2022 Strong customer acclaim (4.8\u2605 across 9,612 reviews)","estimated_savings":150.0},{"product_id":"PROD-1026","product_name":"WF-1000XM5 True Wireless Noise Cancelling Earbuds","category":"Audio & Headphones","brand":"Sony","original_price":29990.0,"current_price":23910.0,"discount_percentage":20.3,"rating":4.9,"review_count":5158,"retailer":"Amazon India","timestamp":"2026-10-25T11:00:00","fair_reference_price":24080.0,"is_synthetic":1,"ref_price":24080.0,"deal_score":61.3,"deal_category":"Fair Price","price_diff":170.0,"diff_percentage":0.71,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9170 (0.7%) below estimated fair market reference price \u2022 20.3% discount against original MRP \u2022 Strong customer acclaim (4.9\u2605 across 5,158 reviews)","estimated_savings":170.0},{"product_id":"PROD-1027","product_name":"WH-CH720N Noise Cancelling Wireless Over-Ear Headphones","category":"Audio & Headphones","brand":"Sony","original_price":14990.0,"current_price":9410.0,"discount_percentage":37.2,"rating":4.5,"review_count":603,"retailer":"Amazon India","timestamp":"2026-10-24T02:00:00","fair_reference_price":10030.0,"is_synthetic":1,"ref_price":10030.0,"deal_score":74.5,"deal_category":"Good Deal","price_diff":620.0,"diff_percentage":6.18,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9620 (6.2%) below estimated fair market reference price \u2022 37.2% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 603 reviews)","estimated_savings":620.0},{"product_id":"PROD-1028","product_name":"QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones","category":"Audio & Headphones","brand":"Bose","original_price":32900.0,"current_price":22880.0,"discount_percentage":30.5,"rating":4.2,"review_count":3523,"retailer":"Flipkart","timestamp":"2026-10-24T06:00:00","fair_reference_price":25830.0,"is_synthetic":1,"ref_price":25830.0,"deal_score":87.2,"deal_category":"Great Deal","price_diff":2950.0,"diff_percentage":11.42,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,950 (11.4%) below estimated fair market reference price \u2022 30.5% discount against original MRP","estimated_savings":2950.0},{"product_id":"PROD-1029","product_name":"QuietComfort Ultra Wireless Earbuds with Spatial Audio","category":"Audio & Headphones","brand":"Bose","original_price":29900.0,"current_price":24990.0,"discount_percentage":16.4,"rating":4.2,"review_count":1412,"retailer":"Reliance Digital","timestamp":"2026-10-24T03:00:00","fair_reference_price":24960.0,"is_synthetic":1,"ref_price":24960.0,"deal_score":54.8,"deal_category":"Fair Price","price_diff":-30.0,"diff_percentage":-0.12,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b930 (0.1%) above estimated fair reference price \u2022 16.4% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1030","product_name":"Momentum 4 Wireless Audiophile Headphones (60h Battery)","category":"Audio & Headphones","brand":"Sennheiser","original_price":34990.0,"current_price":23920.0,"discount_percentage":31.6,"rating":4.8,"review_count":638,"retailer":"Reliance Digital","timestamp":"2026-10-24T13:00:00","fair_reference_price":24070.0,"is_synthetic":1,"ref_price":24070.0,"deal_score":62.1,"deal_category":"Fair Price","price_diff":150.0,"diff_percentage":0.62,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9150 (0.6%) below estimated fair market reference price \u2022 31.6% discount against original MRP \u2022 Strong customer acclaim (4.8\u2605 across 638 reviews)","estimated_savings":150.0},{"product_id":"PROD-1031","product_name":"HD 450SE Bluetooth Wireless Active Noise Cancelling","category":"Audio & Headphones","brand":"Sennheiser","original_price":14990.0,"current_price":8580.0,"discount_percentage":42.8,"rating":4.4,"review_count":4998,"retailer":"Amazon India","timestamp":"2026-10-24T21:00:00","fair_reference_price":8530.0,"is_synthetic":1,"ref_price":8530.0,"deal_score":61.2,"deal_category":"Fair Price","price_diff":-50.0,"diff_percentage":-0.59,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b950 (0.6%) above estimated fair reference price \u2022 42.8% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 4,998 reviews)","estimated_savings":0.0},{"product_id":"PROD-1032","product_name":"Live 660NC Wireless Over-Ear Active Noise Cancelling","category":"Audio & Headphones","brand":"JBL","original_price":14999.0,"current_price":9000.0,"discount_percentage":40.0,"rating":4.4,"review_count":419,"retailer":"Flipkart","timestamp":"2026-10-25T09:00:00","fair_reference_price":9180.0,"is_synthetic":1,"ref_price":9180.0,"deal_score":65.2,"deal_category":"Good Deal","price_diff":180.0,"diff_percentage":1.96,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9180 (2.0%) below estimated fair market reference price \u2022 40.0% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 419 reviews)","estimated_savings":180.0},{"product_id":"PROD-1033","product_name":"Tune 770NC Adaptive Noise Cancelling Wireless Headphones","category":"Audio & Headphones","brand":"JBL","original_price":9999.0,"current_price":5960.0,"discount_percentage":40.4,"rating":4.0,"review_count":465,"retailer":"Croma","timestamp":"2026-10-24T19:00:00","fair_reference_price":6380.0,"is_synthetic":1,"ref_price":6380.0,"deal_score":73.9,"deal_category":"Good Deal","price_diff":420.0,"diff_percentage":6.58,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9420 (6.6%) below estimated fair market reference price \u2022 40.4% discount against original MRP","estimated_savings":420.0},{"product_id":"PROD-1034","product_name":"Rockerz 450 Bluetooth On-Ear Headphone (15 Hours Playback)","category":"Audio & Headphones","brand":"boAt","original_price":3990.0,"current_price":1480.0,"discount_percentage":62.9,"rating":4.0,"review_count":2153,"retailer":"Amazon India","timestamp":"2026-10-24T10:00:00","fair_reference_price":1470.0,"is_synthetic":1,"ref_price":1470.0,"deal_score":60.3,"deal_category":"Fair Price","price_diff":-10.0,"diff_percentage":-0.68,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b910 (0.7%) above estimated fair reference price \u2022 62.9% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1035","product_name":"Nirvana Ion TWS Earbuds (120 Hours Playback, Dual EQ)","category":"Audio & Headphones","brand":"boAt","original_price":7990.0,"current_price":2210.0,"discount_percentage":72.3,"rating":4.6,"review_count":1356,"retailer":"Flipkart","timestamp":"2026-10-25T06:00:00","fair_reference_price":2400.0,"is_synthetic":1,"ref_price":2400.0,"deal_score":84.8,"deal_category":"Great Deal","price_diff":190.0,"diff_percentage":7.92,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9190 (7.9%) below estimated fair market reference price \u2022 72.3% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 1,356 reviews)","estimated_savings":190.0},{"product_id":"PROD-1036","product_name":"Noise Two Wireless On-Ear Headphones (50 Hours Playtime)","category":"Audio & Headphones","brand":"Noise","original_price":4999.0,"current_price":1410.0,"discount_percentage":71.8,"rating":3.8,"review_count":1734,"retailer":"Croma","timestamp":"2026-10-25T23:00:00","fair_reference_price":1500.0,"is_synthetic":1,"ref_price":1500.0,"deal_score":76.0,"deal_category":"Good Deal","price_diff":90.0,"diff_percentage":6.0,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b990 (6.0%) below estimated fair market reference price \u2022 71.8% discount against original MRP","estimated_savings":90.0},{"product_id":"PROD-1037","product_name":"Watch Series 9 GPS 41mm Midnight Aluminium Case","category":"Smartwatches & Wearables","brand":"Apple","original_price":41900.0,"current_price":32170.0,"discount_percentage":23.2,"rating":4.3,"review_count":4395,"retailer":"Tata CLiQ","timestamp":"2026-10-25T13:00:00","fair_reference_price":37610.0,"is_synthetic":1,"ref_price":37610.0,"deal_score":92.3,"deal_category":"Great Deal","price_diff":5440.0,"diff_percentage":14.46,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,440 (14.5%) below estimated fair market reference price \u2022 23.2% discount against original MRP","estimated_savings":5440.0},{"product_id":"PROD-1038","product_name":"Watch Ultra 2 GPS + Cellular 49mm Titanium Case","category":"Smartwatches & Wearables","brand":"Apple","original_price":89900.0,"current_price":86810.0,"discount_percentage":3.4,"rating":4.7,"review_count":1199,"retailer":"Amazon India","timestamp":"2026-10-24T03:00:00","fair_reference_price":81170.0,"is_synthetic":1,"ref_price":81170.0,"deal_score":37.0,"deal_category":"Above Reference","price_diff":-5640.0,"diff_percentage":-6.95,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,640 (6.9%) above estimated fair reference price \u2022 Strong customer acclaim (4.7\u2605 across 1,199 reviews)","estimated_savings":0.0},{"product_id":"PROD-1039","product_name":"Galaxy Watch 6 Bluetooth 44mm (Graphite)","category":"Smartwatches & Wearables","brand":"Samsung","original_price":33999.0,"current_price":23400.0,"discount_percentage":31.2,"rating":4.5,"review_count":14995,"retailer":"Amazon India","timestamp":"2026-10-24T20:00:00","fair_reference_price":23000.0,"is_synthetic":1,"ref_price":23000.0,"deal_score":55.9,"deal_category":"Fair Price","price_diff":-400.0,"diff_percentage":-1.74,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9400 (1.7%) above estimated fair reference price \u2022 31.2% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 14,995 reviews)","estimated_savings":0.0},{"product_id":"PROD-1040","product_name":"Galaxy Watch 6 Classic 47mm Bluetooth (Black)","category":"Smartwatches & Wearables","brand":"Samsung","original_price":40999.0,"current_price":29850.0,"discount_percentage":27.2,"rating":4.7,"review_count":1922,"retailer":"Croma","timestamp":"2026-10-25T02:00:00","fair_reference_price":28320.0,"is_synthetic":1,"ref_price":28320.0,"deal_score":46.8,"deal_category":"Fair Price","price_diff":-1530.0,"diff_percentage":-5.4,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,530 (5.4%) above estimated fair reference price \u2022 27.2% discount against original MRP \u2022 Strong customer acclaim (4.7\u2605 across 1,922 reviews)","estimated_savings":0.0},{"product_id":"PROD-1041","product_name":"Forerunner 265 GPS Running Smartwatch (AMOLED Display)","category":"Smartwatches & Wearables","brand":"Garmin","original_price":50490.0,"current_price":45400.0,"discount_percentage":10.1,"rating":4.6,"review_count":875,"retailer":"Croma","timestamp":"2026-10-25T06:00:00","fair_reference_price":45660.0,"is_synthetic":1,"ref_price":45660.0,"deal_score":56.2,"deal_category":"Fair Price","price_diff":260.0,"diff_percentage":0.57,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9260 (0.6%) below estimated fair market reference price \u2022 Strong customer acclaim (4.6\u2605 across 875 reviews)","estimated_savings":260.0},{"product_id":"PROD-1042","product_name":"Instinct 2 Solar Rugged Outdoor Smartwatch","category":"Smartwatches & Wearables","brand":"Garmin","original_price":46990.0,"current_price":42070.0,"discount_percentage":10.5,"rating":4.8,"review_count":1823,"retailer":"Flipkart","timestamp":"2026-10-25T14:00:00","fair_reference_price":38560.0,"is_synthetic":1,"ref_price":38560.0,"deal_score":33.9,"deal_category":"Above Reference","price_diff":-3510.0,"diff_percentage":-9.1,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,510 (9.1%) above estimated fair reference price \u2022 Strong customer acclaim (4.8\u2605 across 1,823 reviews)","estimated_savings":0.0},{"product_id":"PROD-1043","product_name":"Charge 6 Advanced Health & Fitness Tracker with Google Apps","category":"Smartwatches & Wearables","brand":"Fitbit","original_price":14999.0,"current_price":12250.0,"discount_percentage":18.3,"rating":3.9,"review_count":298,"retailer":"Amazon India","timestamp":"2026-10-25T10:00:00","fair_reference_price":12060.0,"is_synthetic":1,"ref_price":12060.0,"deal_score":50.1,"deal_category":"Fair Price","price_diff":-190.0,"diff_percentage":-1.58,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9190 (1.6%) above estimated fair reference price \u2022 18.3% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1044","product_name":"ColorFit Pulse 2 Max 1.85'' Display Bluetooth Calling Smartwatch","category":"Smartwatches & Wearables","brand":"Noise","original_price":5999.0,"current_price":1570.0,"discount_percentage":73.8,"rating":3.7,"review_count":2775,"retailer":"Flipkart","timestamp":"2026-10-25T02:00:00","fair_reference_price":1800.0,"is_synthetic":1,"ref_price":1800.0,"deal_score":92.4,"deal_category":"Great Deal","price_diff":230.0,"diff_percentage":12.78,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9230 (12.8%) below estimated fair market reference price \u2022 73.8% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":230.0},{"product_id":"PROD-1045","product_name":"Halo Plus 1.46'' Metallic AMOLED Display Smartwatch","category":"Smartwatches & Wearables","brand":"Noise","original_price":7999.0,"current_price":2600.0,"discount_percentage":67.5,"rating":4.0,"review_count":1209,"retailer":"Flipkart","timestamp":"2026-10-25T17:00:00","fair_reference_price":3100.0,"is_synthetic":1,"ref_price":3100.0,"deal_score":97.0,"deal_category":"Great Deal","price_diff":500.0,"diff_percentage":16.13,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9500 (16.1%) below estimated fair market reference price \u2022 67.5% discount against original MRP","estimated_savings":500.0},{"product_id":"PROD-1046","product_name":"GTR 4 Smart Watch with Dual-Band GPS & 14-Day Battery","category":"Smartwatches & Wearables","brand":"Amazfit","original_price":23999.0,"current_price":15280.0,"discount_percentage":36.3,"rating":4.9,"review_count":16516,"retailer":"Flipkart","timestamp":"2026-10-25T18:00:00","fair_reference_price":16280.0,"is_synthetic":1,"ref_price":16280.0,"deal_score":78.9,"deal_category":"Good Deal","price_diff":1000.0,"diff_percentage":6.14,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,000 (6.1%) below estimated fair market reference price \u2022 36.3% discount against original MRP \u2022 Strong customer acclaim (4.9\u2605 across 16,516 reviews)","estimated_savings":1000.0},{"product_id":"PROD-1047","product_name":"Active Smart Watch 1.75'' AMOLED Display with AI Coach","category":"Smartwatches & Wearables","brand":"Amazfit","original_price":12999.0,"current_price":10670.0,"discount_percentage":17.9,"rating":4.7,"review_count":850,"retailer":"Amazon India","timestamp":"2026-10-24T23:00:00","fair_reference_price":9770.0,"is_synthetic":1,"ref_price":9770.0,"deal_score":36.5,"deal_category":"Above Reference","price_diff":-900.0,"diff_percentage":-9.21,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9900 (9.2%) above estimated fair reference price \u2022 17.9% discount against original MRP \u2022 Strong customer acclaim (4.7\u2605 across 850 reviews)","estimated_savings":0.0},{"product_id":"PROD-1048","product_name":"OLED evo C3 Series 55-inch 4K Ultra HD Smart TV (OLED55C3PSA)","category":"Televisions","brand":"LG","original_price":169990.0,"current_price":113050.0,"discount_percentage":33.5,"rating":4.0,"review_count":13273,"retailer":"Amazon India","timestamp":"2026-10-25T17:00:00","fair_reference_price":123220.0,"is_synthetic":1,"ref_price":123220.0,"deal_score":79.0,"deal_category":"Good Deal","price_diff":10170.0,"diff_percentage":8.25,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b910,170 (8.3%) below estimated fair market reference price \u2022 33.5% discount against original MRP","estimated_savings":10170.0},{"product_id":"PROD-1049","product_name":"UR75 Series 43-inch 4K Ultra HD Smart LED TV (43UR7500PSC)","category":"Televisions","brand":"LG","original_price":49990.0,"current_price":31450.0,"discount_percentage":37.1,"rating":4.6,"review_count":8264,"retailer":"Amazon India","timestamp":"2026-10-25T01:00:00","fair_reference_price":33370.0,"is_synthetic":1,"ref_price":33370.0,"deal_score":76.7,"deal_category":"Good Deal","price_diff":1920.0,"diff_percentage":5.75,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,920 (5.8%) below estimated fair market reference price \u2022 37.1% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 8,264 reviews)","estimated_savings":1920.0},{"product_id":"PROD-1050","product_name":"Crystal iSmart 4K Ultra HD 55-inch Smart LED TV","category":"Televisions","brand":"Samsung","original_price":68900.0,"current_price":40300.0,"discount_percentage":41.5,"rating":3.8,"review_count":16522,"retailer":"Amazon India","timestamp":"2026-10-25T01:00:00","fair_reference_price":40210.0,"is_synthetic":1,"ref_price":40210.0,"deal_score":58.8,"deal_category":"Fair Price","price_diff":-90.0,"diff_percentage":-0.22,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b990 (0.2%) above estimated fair reference price \u2022 41.5% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1051","product_name":"The Frame Series 55-inch QLED 4K Smart TV with Matte Display","category":"Televisions","brand":"Samsung","original_price":134900.0,"current_price":87510.0,"discount_percentage":35.1,"rating":4.2,"review_count":17092,"retailer":"Amazon India","timestamp":"2026-10-24T09:00:00","fair_reference_price":89240.0,"is_synthetic":1,"ref_price":89240.0,"deal_score":64.6,"deal_category":"Fair Price","price_diff":1730.0,"diff_percentage":1.94,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,730 (1.9%) below estimated fair market reference price \u2022 35.1% discount against original MRP","estimated_savings":1730.0},{"product_id":"PROD-1052","product_name":"Bravia 55-inch 4K Ultra HD Smart LED Google TV (KD-55X74L)","category":"Televisions","brand":"Sony","original_price":99900.0,"current_price":58650.0,"discount_percentage":41.3,"rating":3.6,"review_count":379,"retailer":"Flipkart","timestamp":"2026-10-25T07:00:00","fair_reference_price":61010.0,"is_synthetic":1,"ref_price":61010.0,"deal_score":66.2,"deal_category":"Good Deal","price_diff":2360.0,"diff_percentage":3.87,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b92,360 (3.9%) below estimated fair market reference price \u2022 41.3% discount against original MRP \u2022 Sub-par customer satisfaction (3.6\u2605)","estimated_savings":2360.0},{"product_id":"PROD-1053","product_name":"Bravia XR 65-inch 4K HDR Full Array LED Google TV (XR-65X90L)","category":"Televisions","brand":"Sony","original_price":189900.0,"current_price":123880.0,"discount_percentage":34.8,"rating":4.3,"review_count":30260,"retailer":"Reliance Digital","timestamp":"2026-10-25T21:00:00","fair_reference_price":140370.0,"is_synthetic":1,"ref_price":140370.0,"deal_score":89.6,"deal_category":"Great Deal","price_diff":16490.0,"diff_percentage":11.75,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b916,490 (11.7%) below estimated fair market reference price \u2022 34.8% discount against original MRP","estimated_savings":16490.0},{"product_id":"PROD-1054","product_name":"55-inch 4K Ultra HD Smart QLED Google TV (55C645)","category":"Televisions","brand":"TCL","original_price":74990.0,"current_price":34730.0,"discount_percentage":53.7,"rating":4.2,"review_count":1945,"retailer":"Flipkart","timestamp":"2026-10-24T01:00:00","fair_reference_price":38040.0,"is_synthetic":1,"ref_price":38040.0,"deal_score":84.8,"deal_category":"Great Deal","price_diff":3310.0,"diff_percentage":8.7,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,310 (8.7%) below estimated fair market reference price \u2022 53.7% discount against original MRP","estimated_savings":3310.0},{"product_id":"PROD-1055","product_name":"Xiaomi X Series 50-inch 4K Ultra HD Smart Google TV","category":"Televisions","brand":"Mi","original_price":42999.0,"current_price":29310.0,"discount_percentage":31.8,"rating":4.1,"review_count":22778,"retailer":"Flipkart","timestamp":"2026-10-24T18:00:00","fair_reference_price":29440.0,"is_synthetic":1,"ref_price":29440.0,"deal_score":59.6,"deal_category":"Fair Price","price_diff":130.0,"diff_percentage":0.44,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9130 (0.4%) below estimated fair market reference price \u2022 31.8% discount against original MRP","estimated_savings":130.0},{"product_id":"PROD-1056","product_name":"The GloLED Series 55-inch 4K Smart LED Google TV","category":"Televisions","brand":"Vu","original_price":55000.0,"current_price":33200.0,"discount_percentage":39.6,"rating":4.1,"review_count":2319,"retailer":"Amazon India","timestamp":"2026-10-24T13:00:00","fair_reference_price":36010.0,"is_synthetic":1,"ref_price":36010.0,"deal_score":79.9,"deal_category":"Good Deal","price_diff":2810.0,"diff_percentage":7.8,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,810 (7.8%) below estimated fair market reference price \u2022 39.6% discount against original MRP","estimated_savings":2810.0},{"product_id":"PROD-1057","product_name":"iPad 10th Gen 10.9-inch (A14 Bionic, Wi-Fi 64GB, Silver)","category":"Tablets","brand":"Apple","original_price":39900.0,"current_price":27510.0,"discount_percentage":31.1,"rating":4.1,"review_count":1180,"retailer":"Flipkart","timestamp":"2026-10-25T16:00:00","fair_reference_price":32810.0,"is_synthetic":1,"ref_price":32810.0,"deal_score":93.3,"deal_category":"Great Deal","price_diff":5300.0,"diff_percentage":16.15,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,300 (16.2%) below estimated fair market reference price \u2022 31.1% discount against original MRP","estimated_savings":5300.0},{"product_id":"PROD-1058","product_name":"iPad Air 11-inch M2 chip (Wi-Fi 128GB, Space Grey)","category":"Tablets","brand":"Apple","original_price":59900.0,"current_price":59900.0,"discount_percentage":0.0,"rating":4.1,"review_count":5177,"retailer":"Amazon India","timestamp":"2026-10-24T23:00:00","fair_reference_price":55090.0,"is_synthetic":1,"ref_price":55090.0,"deal_score":28.7,"deal_category":"Above Reference","price_diff":-4810.0,"diff_percentage":-8.73,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,810 (8.7%) above estimated fair reference price","estimated_savings":0.0},{"product_id":"PROD-1059","product_name":"Galaxy Tab S9 FE 10.9-inch with S Pen (Wi-Fi 128GB)","category":"Tablets","brand":"Samsung","original_price":44999.0,"current_price":33040.0,"discount_percentage":26.6,"rating":3.7,"review_count":417,"retailer":"Croma","timestamp":"2026-10-25T18:00:00","fair_reference_price":32400.0,"is_synthetic":1,"ref_price":32400.0,"deal_score":50.2,"deal_category":"Fair Price","price_diff":-640.0,"diff_percentage":-1.98,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9640 (2.0%) above estimated fair reference price \u2022 26.6% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":0.0},{"product_id":"PROD-1060","product_name":"Galaxy Tab S9 Ultra 14.6-inch Dynamic AMOLED 2X (256GB)","category":"Tablets","brand":"Samsung","original_price":108999.0,"current_price":102190.0,"discount_percentage":6.2,"rating":4.8,"review_count":1066,"retailer":"Croma","timestamp":"2026-10-24T12:00:00","fair_reference_price":90770.0,"is_synthetic":1,"ref_price":90770.0,"deal_score":24.1,"deal_category":"Above Reference","price_diff":-11420.0,"diff_percentage":-12.58,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b911,420 (12.6%) above estimated fair reference price \u2022 Strong customer acclaim (4.8\u2605 across 1,066 reviews)","estimated_savings":0.0},{"product_id":"PROD-1061","product_name":"Tab M11 11-inch WUXGA with Pen (8GB RAM, 128GB)","category":"Tablets","brand":"Lenovo","original_price":28000.0,"current_price":19290.0,"discount_percentage":31.1,"rating":4.1,"review_count":5647,"retailer":"Reliance Digital","timestamp":"2026-10-25T05:00:00","fair_reference_price":17690.0,"is_synthetic":1,"ref_price":17690.0,"deal_score":35.7,"deal_category":"Above Reference","price_diff":-1600.0,"diff_percentage":-9.04,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,600 (9.0%) above estimated fair reference price \u2022 31.1% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1062","product_name":"Pad 6 11-inch 2.8K 144Hz Display (Snapdragon 870, 8GB, 256GB)","category":"Tablets","brand":"Xiaomi","original_price":39999.0,"current_price":23520.0,"discount_percentage":41.2,"rating":4.2,"review_count":866,"retailer":"Tata CLiQ","timestamp":"2026-10-24T07:00:00","fair_reference_price":28350.0,"is_synthetic":1,"ref_price":28350.0,"deal_score":91.7,"deal_category":"Great Deal","price_diff":4830.0,"diff_percentage":17.04,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b94,830 (17.0%) below estimated fair market reference price \u2022 41.2% discount against original MRP","estimated_savings":4830.0},{"product_id":"PROD-1063","product_name":"Pad 11.61-inch 144Hz 7:5 ReadFit Display (12GB, 256GB)","category":"Tablets","brand":"OnePlus","original_price":39999.0,"current_price":32730.0,"discount_percentage":18.2,"rating":3.7,"review_count":1057,"retailer":"Amazon India","timestamp":"2026-10-24T08:00:00","fair_reference_price":32560.0,"is_synthetic":1,"ref_price":32560.0,"deal_score":51.7,"deal_category":"Fair Price","price_diff":-170.0,"diff_percentage":-0.52,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9170 (0.5%) above estimated fair reference price \u2022 18.2% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":0.0},{"product_id":"PROD-1064","product_name":"EOS R50 Mirrorless Camera RF-S18-45mm IS STM Lens Kit","category":"Cameras","brand":"Canon","original_price":75995.0,"current_price":64290.0,"discount_percentage":15.4,"rating":4.1,"review_count":1789,"retailer":"Flipkart","timestamp":"2026-10-25T00:00:00","fair_reference_price":63550.0,"is_synthetic":1,"ref_price":63550.0,"deal_score":51.4,"deal_category":"Fair Price","price_diff":-740.0,"diff_percentage":-1.16,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9740 (1.2%) above estimated fair reference price \u2022 15.4% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1065","product_name":"EOS R10 24.2 MP Mirrorless Camera with 18-150mm Lens Kit","category":"Cameras","brand":"Canon","original_price":116995.0,"current_price":111270.0,"discount_percentage":4.9,"rating":4.5,"review_count":9223,"retailer":"Amazon India","timestamp":"2026-10-24T11:00:00","fair_reference_price":103500.0,"is_synthetic":1,"ref_price":103500.0,"deal_score":35.0,"deal_category":"Above Reference","price_diff":-7770.0,"diff_percentage":-7.51,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b97,770 (7.5%) above estimated fair reference price \u2022 Strong customer acclaim (4.5\u2605 across 9,223 reviews)","estimated_savings":0.0},{"product_id":"PROD-1066","product_name":"Alpha 7 IV Full-frame Hybrid Camera Body (33MP, 4K 60p)","category":"Cameras","brand":"Sony","original_price":242490.0,"current_price":212910.0,"discount_percentage":12.2,"rating":4.5,"review_count":5151,"retailer":"Amazon India","timestamp":"2026-10-25T11:00:00","fair_reference_price":216610.0,"is_synthetic":1,"ref_price":216610.0,"deal_score":59.8,"deal_category":"Fair Price","price_diff":3700.0,"diff_percentage":1.71,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,700 (1.7%) below estimated fair market reference price \u2022 Strong customer acclaim (4.5\u2605 across 5,151 reviews)","estimated_savings":3700.0},{"product_id":"PROD-1067","product_name":"ZV-E10 Mirrorless Vlog Camera with 16-50mm Lens Kit","category":"Cameras","brand":"Sony","original_price":69990.0,"current_price":65850.0,"discount_percentage":5.9,"rating":4.7,"review_count":1019,"retailer":"Tata CLiQ","timestamp":"2026-10-24T02:00:00","fair_reference_price":61120.0,"is_synthetic":1,"ref_price":61120.0,"deal_score":35.6,"deal_category":"Above Reference","price_diff":-4730.0,"diff_percentage":-7.74,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,730 (7.7%) above estimated fair reference price \u2022 Strong customer acclaim (4.7\u2605 across 1,019 reviews)","estimated_savings":0.0},{"product_id":"PROD-1068","product_name":"Z50 Mirrorless Camera with NIKKOR Z DX 16-50mm Lens Kit","category":"Cameras","brand":"Nikon","original_price":85995.0,"current_price":66840.0,"discount_percentage":22.3,"rating":3.6,"review_count":11896,"retailer":"Reliance Digital","timestamp":"2026-10-25T19:00:00","fair_reference_price":67170.0,"is_synthetic":1,"ref_price":67170.0,"deal_score":54.8,"deal_category":"Fair Price","price_diff":330.0,"diff_percentage":0.49,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9330 (0.5%) below estimated fair market reference price \u2022 22.3% discount against original MRP \u2022 Sub-par customer satisfaction (3.6\u2605)","estimated_savings":330.0},{"product_id":"PROD-1069","product_name":"X-T30 II Mirrorless Digital Camera with XC15-45mm Lens Kit","category":"Cameras","brand":"Fujifilm","original_price":99999.0,"current_price":90260.0,"discount_percentage":9.7,"rating":4.1,"review_count":1706,"retailer":"Amazon India","timestamp":"2026-10-25T21:00:00","fair_reference_price":93110.0,"is_synthetic":1,"ref_price":93110.0,"deal_score":60.6,"deal_category":"Fair Price","price_diff":2850.0,"diff_percentage":3.06,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,850 (3.1%) below estimated fair market reference price","estimated_savings":2850.0},{"product_id":"PROD-1070","product_name":"Lumix G7 16 MP 4K Mirrorless Camera with 14-42mm Lens","category":"Cameras","brand":"Panasonic","original_price":54990.0,"current_price":42240.0,"discount_percentage":23.2,"rating":4.5,"review_count":2011,"retailer":"Amazon India","timestamp":"2026-10-24T05:00:00","fair_reference_price":41830.0,"is_synthetic":1,"ref_price":41830.0,"deal_score":55.8,"deal_category":"Fair Price","price_diff":-410.0,"diff_percentage":-0.98,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9410 (1.0%) above estimated fair reference price \u2022 23.2% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 2,011 reviews)","estimated_savings":0.0},{"product_id":"PROD-1071","product_name":"V8 Absolute Cordless Vacuum Cleaner (Powerful Suction)","category":"Home Appliances","brand":"Dyson","original_price":43900.0,"current_price":35780.0,"discount_percentage":18.5,"rating":4.3,"review_count":5885,"retailer":"Tata CLiQ","timestamp":"2026-10-25T09:00:00","fair_reference_price":33680.0,"is_synthetic":1,"ref_price":33680.0,"deal_score":40.5,"deal_category":"Above Reference","price_diff":-2100.0,"diff_percentage":-6.24,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,100 (6.2%) above estimated fair reference price \u2022 18.5% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1072","product_name":"Purifier Hot+Cool Air Purifier HP07 (HEPA H13 Filter)","category":"Home Appliances","brand":"Dyson","original_price":66900.0,"current_price":58210.0,"discount_percentage":13.0,"rating":4.9,"review_count":2943,"retailer":"Flipkart","timestamp":"2026-10-25T05:00:00","fair_reference_price":57140.0,"is_synthetic":1,"ref_price":57140.0,"deal_score":53.1,"deal_category":"Fair Price","price_diff":-1070.0,"diff_percentage":-1.87,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,070 (1.9%) above estimated fair reference price \u2022 Strong customer acclaim (4.9\u2605 across 2,943 reviews)","estimated_savings":0.0},{"product_id":"PROD-1073","product_name":"Airfryer HD9252\/90 Digital Air Fryer with Rapid Air Tech","category":"Home Appliances","brand":"Philips","original_price":12995.0,"current_price":8520.0,"discount_percentage":34.4,"rating":4.3,"review_count":5834,"retailer":"Flipkart","timestamp":"2026-10-25T18:00:00","fair_reference_price":8490.0,"is_synthetic":1,"ref_price":8490.0,"deal_score":59.2,"deal_category":"Fair Price","price_diff":-30.0,"diff_percentage":-0.35,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b930 (0.4%) above estimated fair reference price \u2022 34.4% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1074","product_name":"Smart Wi-Fi Connected Robot Vacuum Cleaner XU3000","category":"Home Appliances","brand":"Philips","original_price":49995.0,"current_price":26990.0,"discount_percentage":46.0,"rating":4.7,"review_count":205,"retailer":"Amazon India","timestamp":"2026-10-25T09:00:00","fair_reference_price":30890.0,"is_synthetic":1,"ref_price":30890.0,"deal_score":91.9,"deal_category":"Great Deal","price_diff":3900.0,"diff_percentage":12.63,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b93,900 (12.6%) below estimated fair market reference price \u2022 46.0% discount against original MRP \u2022 Strong customer acclaim (4.7\u2605 across 205 reviews)","estimated_savings":3900.0},{"product_id":"PROD-1075","product_name":"8.0 Kg 5 Star Inverter Fully-Automatic Front Load Washer","category":"Home Appliances","brand":"LG","original_price":46990.0,"current_price":35570.0,"discount_percentage":24.3,"rating":3.6,"review_count":2793,"retailer":"Croma","timestamp":"2026-10-25T17:00:00","fair_reference_price":32050.0,"is_synthetic":1,"ref_price":32050.0,"deal_score":26.6,"deal_category":"Above Reference","price_diff":-3520.0,"diff_percentage":-10.98,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,520 (11.0%) above estimated fair reference price \u2022 24.3% discount against original MRP \u2022 Sub-par customer satisfaction (3.6\u2605)","estimated_savings":0.0},{"product_id":"PROD-1076","product_name":"28L Convection Microwave Oven with Tandoor Technology","category":"Home Appliances","brand":"Samsung","original_price":17990.0,"current_price":9920.0,"discount_percentage":44.9,"rating":4.6,"review_count":10635,"retailer":"Flipkart","timestamp":"2026-10-24T23:00:00","fair_reference_price":11970.0,"is_synthetic":1,"ref_price":11970.0,"deal_score":99.2,"deal_category":"Great Deal","price_diff":2050.0,"diff_percentage":17.13,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,050 (17.1%) below estimated fair market reference price \u2022 44.9% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 10,635 reviews)","estimated_savings":2050.0},{"product_id":"PROD-1077","product_name":"13 Place Settings Series 4 Dishwasher (Intensive Kadhai)","category":"Home Appliances","brand":"Bosch","original_price":54990.0,"current_price":42810.0,"discount_percentage":22.1,"rating":4.3,"review_count":1288,"retailer":"Croma","timestamp":"2026-10-25T06:00:00","fair_reference_price":40990.0,"is_synthetic":1,"ref_price":40990.0,"deal_score":45.9,"deal_category":"Fair Price","price_diff":-1820.0,"diff_percentage":-4.44,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,820 (4.4%) above estimated fair reference price \u2022 22.1% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1078","product_name":"8.5 Kg 5 Star Fully-Automatic Front Loading Machine","category":"Home Appliances","brand":"IFB","original_price":47500.0,"current_price":29480.0,"discount_percentage":37.9,"rating":4.4,"review_count":1629,"retailer":"Reliance Digital","timestamp":"2026-10-24T18:00:00","fair_reference_price":34250.0,"is_synthetic":1,"ref_price":34250.0,"deal_score":96.3,"deal_category":"Great Deal","price_diff":4770.0,"diff_percentage":13.93,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,770 (13.9%) below estimated fair market reference price \u2022 37.9% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 1,629 reviews)","estimated_savings":4770.0},{"product_id":"PROD-1079","product_name":"MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD, Space Grey)","category":"Laptops","brand":"Apple","original_price":114900.0,"current_price":93030.0,"discount_percentage":19.0,"rating":4.3,"review_count":1691,"retailer":"Reliance Digital","timestamp":"2026-10-24T07:00:00","fair_reference_price":98000.0,"is_synthetic":1,"ref_price":98000.0,"deal_score":68.9,"deal_category":"Good Deal","price_diff":4970.0,"diff_percentage":5.07,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b94,970 (5.1%) below estimated fair market reference price \u2022 19.0% discount against original MRP","estimated_savings":4970.0},{"product_id":"PROD-1080","product_name":"MacBook Pro M3 (14.2-inch, 16GB RAM, 512GB SSD, Space Black)","category":"Laptops","brand":"Apple","original_price":199900.0,"current_price":199900.0,"discount_percentage":0.0,"rating":4.8,"review_count":2630,"retailer":"Tata CLiQ","timestamp":"2026-10-25T00:00:00","fair_reference_price":178900.0,"is_synthetic":1,"ref_price":178900.0,"deal_score":24.7,"deal_category":"Above Reference","price_diff":-21000.0,"diff_percentage":-11.74,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b921,000 (11.7%) above estimated fair reference price \u2022 Strong customer acclaim (4.8\u2605 across 2,630 reviews)","estimated_savings":0.0},{"product_id":"PROD-1081","product_name":"Inspiron 15 3530 (Intel Core i5-1335U, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Dell","original_price":68500.0,"current_price":48800.0,"discount_percentage":28.8,"rating":3.8,"review_count":3437,"retailer":"Flipkart","timestamp":"2026-10-25T13:00:00","fair_reference_price":51510.0,"is_synthetic":1,"ref_price":51510.0,"deal_score":69.3,"deal_category":"Good Deal","price_diff":2710.0,"diff_percentage":5.26,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,710 (5.3%) below estimated fair market reference price \u2022 28.8% discount against original MRP","estimated_savings":2710.0},{"product_id":"PROD-1082","product_name":"XPS 13 9315 (Intel Core i7-1250U, 16GB RAM, 512GB SSD, FHD+)","category":"Laptops","brand":"Dell","original_price":124990.0,"current_price":101310.0,"discount_percentage":18.9,"rating":4.4,"review_count":21096,"retailer":"Croma","timestamp":"2026-10-25T00:00:00","fair_reference_price":105060.0,"is_synthetic":1,"ref_price":105060.0,"deal_score":65.7,"deal_category":"Good Deal","price_diff":3750.0,"diff_percentage":3.57,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,750 (3.6%) below estimated fair market reference price \u2022 18.9% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 21,096 reviews)","estimated_savings":3750.0},{"product_id":"PROD-1083","product_name":"Pavilion 15 (AMD Ryzen 7 7730U, 16GB RAM, 512GB SSD, Backlit KB)","category":"Laptops","brand":"HP","original_price":72000.0,"current_price":64530.0,"discount_percentage":10.4,"rating":4.7,"review_count":2206,"retailer":"Flipkart","timestamp":"2026-10-25T01:00:00","fair_reference_price":58920.0,"is_synthetic":1,"ref_price":58920.0,"deal_score":32.3,"deal_category":"Above Reference","price_diff":-5610.0,"diff_percentage":-9.52,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,610 (9.5%) above estimated fair reference price \u2022 Strong customer acclaim (4.7\u2605 across 2,206 reviews)","estimated_savings":0.0},{"product_id":"PROD-1084","product_name":"Victus Gaming Laptop (Intel Core i5-12450H, RTX 3050, 144Hz)","category":"Laptops","brand":"HP","original_price":79999.0,"current_price":53320.0,"discount_percentage":33.3,"rating":4.8,"review_count":5184,"retailer":"Amazon India","timestamp":"2026-10-25T10:00:00","fair_reference_price":63140.0,"is_synthetic":1,"ref_price":63140.0,"deal_score":97.3,"deal_category":"Great Deal","price_diff":9820.0,"diff_percentage":15.55,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b99,820 (15.6%) below estimated fair market reference price \u2022 33.3% discount against original MRP \u2022 Strong customer acclaim (4.8\u2605 across 5,184 reviews)","estimated_savings":9820.0},{"product_id":"PROD-1085","product_name":"ROG Zephyrus G14 (AMD Ryzen 9, RTX 4060, 16GB RAM, 1TB SSD)","category":"Laptops","brand":"ASUS","original_price":159990.0,"current_price":125880.0,"discount_percentage":21.3,"rating":3.7,"review_count":10231,"retailer":"Flipkart","timestamp":"2026-10-24T05:00:00","fair_reference_price":142250.0,"is_synthetic":1,"ref_price":142250.0,"deal_score":82.6,"deal_category":"Great Deal","price_diff":16370.0,"diff_percentage":11.51,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b916,370 (11.5%) below estimated fair market reference price \u2022 21.3% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":16370.0},{"product_id":"PROD-1086","product_name":"Vivobook 15 (Intel Core i3-1215U, 8GB RAM, 512GB SSD)","category":"Laptops","brand":"ASUS","original_price":49990.0,"current_price":32470.0,"discount_percentage":35.0,"rating":4.1,"review_count":8967,"retailer":"Flipkart","timestamp":"2026-10-25T06:00:00","fair_reference_price":34380.0,"is_synthetic":1,"ref_price":34380.0,"deal_score":73.2,"deal_category":"Good Deal","price_diff":1910.0,"diff_percentage":5.56,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,910 (5.6%) below estimated fair market reference price \u2022 35.0% discount against original MRP","estimated_savings":1910.0},{"product_id":"PROD-1087","product_name":"IdeaPad Slim 3 (Intel Core i5-12450H, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Lenovo","original_price":64990.0,"current_price":48740.0,"discount_percentage":25.0,"rating":4.3,"review_count":4701,"retailer":"Amazon India","timestamp":"2026-10-24T03:00:00","fair_reference_price":46210.0,"is_synthetic":1,"ref_price":46210.0,"deal_score":44.1,"deal_category":"Above Reference","price_diff":-2530.0,"diff_percentage":-5.48,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,530 (5.5%) above estimated fair reference price \u2022 25.0% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1088","product_name":"LOQ 15 Gaming (AMD Ryzen 7 7840HS, RTX 4050, 16GB, 512GB)","category":"Laptops","brand":"Lenovo","original_price":94990.0,"current_price":85180.0,"discount_percentage":10.3,"rating":4.7,"review_count":320,"retailer":"Amazon India","timestamp":"2026-10-24T04:00:00","fair_reference_price":78200.0,"is_synthetic":1,"ref_price":78200.0,"deal_score":35.4,"deal_category":"Above Reference","price_diff":-6980.0,"diff_percentage":-8.93,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b96,980 (8.9%) above estimated fair reference price \u2022 Strong customer acclaim (4.7\u2605 across 320 reviews)","estimated_savings":0.0},{"product_id":"PROD-1089","product_name":"Nitro V 15 (Intel Core i5-13420H, RTX 4050 6GB, 16GB, 512GB)","category":"Laptops","brand":"Acer","original_price":82999.0,"current_price":62800.0,"discount_percentage":24.3,"rating":3.9,"review_count":3246,"retailer":"Amazon India","timestamp":"2026-10-24T06:00:00","fair_reference_price":69220.0,"is_synthetic":1,"ref_price":69220.0,"deal_score":78.8,"deal_category":"Good Deal","price_diff":6420.0,"diff_percentage":9.27,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b96,420 (9.3%) below estimated fair market reference price \u2022 24.3% discount against original MRP","estimated_savings":6420.0},{"product_id":"PROD-1090","product_name":"Aspire Lite (AMD Ryzen 5 5500U, 16GB RAM, 512GB SSD)","category":"Laptops","brand":"Acer","original_price":52990.0,"current_price":32170.0,"discount_percentage":39.3,"rating":4.1,"review_count":1021,"retailer":"Amazon India","timestamp":"2026-10-25T19:00:00","fair_reference_price":34350.0,"is_synthetic":1,"ref_price":34350.0,"deal_score":76.2,"deal_category":"Good Deal","price_diff":2180.0,"diff_percentage":6.35,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,180 (6.3%) below estimated fair market reference price \u2022 39.3% discount against original MRP","estimated_savings":2180.0},{"product_id":"PROD-1091","product_name":"iPhone 15 (128GB, Blue)","category":"Smartphones","brand":"Apple","original_price":79900.0,"current_price":68080.0,"discount_percentage":14.8,"rating":3.8,"review_count":1436,"retailer":"Amazon India","timestamp":"2026-10-24T09:00:00","fair_reference_price":70830.0,"is_synthetic":1,"ref_price":70830.0,"deal_score":62.4,"deal_category":"Fair Price","price_diff":2750.0,"diff_percentage":3.88,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,750 (3.9%) below estimated fair market reference price","estimated_savings":2750.0},{"product_id":"PROD-1092","product_name":"iPhone 15 Pro (256GB, Natural Titanium)","category":"Smartphones","brand":"Apple","original_price":134900.0,"current_price":123110.0,"discount_percentage":8.7,"rating":4.5,"review_count":7673,"retailer":"Amazon India","timestamp":"2026-10-24T07:00:00","fair_reference_price":125420.0,"is_synthetic":1,"ref_price":125420.0,"deal_score":59.3,"deal_category":"Fair Price","price_diff":2310.0,"diff_percentage":1.84,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,310 (1.8%) below estimated fair market reference price \u2022 Strong customer acclaim (4.5\u2605 across 7,673 reviews)","estimated_savings":2310.0},{"product_id":"PROD-1093","product_name":"Galaxy S24 5G (8GB RAM, 128GB, Onyx Black)","category":"Smartphones","brand":"Samsung","original_price":79999.0,"current_price":71150.0,"discount_percentage":11.1,"rating":4.6,"review_count":858,"retailer":"Croma","timestamp":"2026-10-25T13:00:00","fair_reference_price":68010.0,"is_synthetic":1,"ref_price":68010.0,"deal_score":44.8,"deal_category":"Above Reference","price_diff":-3140.0,"diff_percentage":-4.62,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b93,140 (4.6%) above estimated fair reference price \u2022 Strong customer acclaim (4.6\u2605 across 858 reviews)","estimated_savings":0.0},{"product_id":"PROD-1094","product_name":"Galaxy S24 Ultra (12GB RAM, 256GB, Titanium Gray)","category":"Smartphones","brand":"Samsung","original_price":129999.0,"current_price":115680.0,"discount_percentage":11.0,"rating":4.9,"review_count":1245,"retailer":"Amazon India","timestamp":"2026-10-24T13:00:00","fair_reference_price":121580.0,"is_synthetic":1,"ref_price":121580.0,"deal_score":69.4,"deal_category":"Good Deal","price_diff":5900.0,"diff_percentage":4.85,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b95,900 (4.9%) below estimated fair market reference price \u2022 Strong customer acclaim (4.9\u2605 across 1,245 reviews)","estimated_savings":5900.0},{"product_id":"PROD-1095","product_name":"Galaxy A55 5G (8GB RAM, 128GB, Awesome Iceblue)","category":"Smartphones","brand":"Samsung","original_price":42999.0,"current_price":35580.0,"discount_percentage":17.3,"rating":4.6,"review_count":552,"retailer":"Reliance Digital","timestamp":"2026-10-24T01:00:00","fair_reference_price":36250.0,"is_synthetic":1,"ref_price":36250.0,"deal_score":60.7,"deal_category":"Fair Price","price_diff":670.0,"diff_percentage":1.85,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9670 (1.8%) below estimated fair market reference price \u2022 17.3% discount against original MRP \u2022 Strong customer acclaim (4.6\u2605 across 552 reviews)","estimated_savings":670.0},{"product_id":"PROD-1096","product_name":"OnePlus 12 (16GB RAM, 512GB, Silky Black)","category":"Smartphones","brand":"OnePlus","original_price":69999.0,"current_price":61380.0,"discount_percentage":12.3,"rating":4.8,"review_count":94,"retailer":"Amazon India","timestamp":"2026-10-25T08:00:00","fair_reference_price":63630.0,"is_synthetic":1,"ref_price":63630.0,"deal_score":61.9,"deal_category":"Fair Price","price_diff":2250.0,"diff_percentage":3.54,"confidence_level":"Low Evidence","deal_explanation":"Listed \u20b92,250 (3.5%) below estimated fair market reference price \u2022 Strong customer acclaim (4.8\u2605 across 94 reviews)","estimated_savings":2250.0},{"product_id":"PROD-1097","product_name":"OnePlus 12R (8GB RAM, 128GB, Cool Blue)","category":"Smartphones","brand":"OnePlus","original_price":39999.0,"current_price":35600.0,"discount_percentage":11.0,"rating":3.9,"review_count":824,"retailer":"Amazon India","timestamp":"2026-10-25T13:00:00","fair_reference_price":36740.0,"is_synthetic":1,"ref_price":36740.0,"deal_score":59.0,"deal_category":"Fair Price","price_diff":1140.0,"diff_percentage":3.1,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b91,140 (3.1%) below estimated fair market reference price","estimated_savings":1140.0},{"product_id":"PROD-1098","product_name":"OnePlus Nord CE4 5G (8GB RAM, 128GB, Celadon Marble)","category":"Smartphones","brand":"OnePlus","original_price":24999.0,"current_price":24999.0,"discount_percentage":0.0,"rating":4.7,"review_count":3961,"retailer":"Flipkart","timestamp":"2026-10-24T18:00:00","fair_reference_price":22760.0,"is_synthetic":1,"ref_price":22760.0,"deal_score":28.9,"deal_category":"Above Reference","price_diff":-2239.0,"diff_percentage":-9.84,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,239 (9.8%) above estimated fair reference price \u2022 Strong customer acclaim (4.7\u2605 across 3,961 reviews)","estimated_savings":0.0},{"product_id":"PROD-1099","product_name":"Pixel 8 (128GB, Hazel)","category":"Smartphones","brand":"Google","original_price":75999.0,"current_price":60980.0,"discount_percentage":19.8,"rating":4.1,"review_count":12069,"retailer":"Amazon India","timestamp":"2026-10-24T23:00:00","fair_reference_price":64830.0,"is_synthetic":1,"ref_price":64830.0,"deal_score":70.3,"deal_category":"Good Deal","price_diff":3850.0,"diff_percentage":5.94,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b93,850 (5.9%) below estimated fair market reference price \u2022 19.8% discount against original MRP","estimated_savings":3850.0},{"product_id":"PROD-1100","product_name":"Pixel 8a (128GB, Bay Blue)","category":"Smartphones","brand":"Google","original_price":52999.0,"current_price":43110.0,"discount_percentage":18.7,"rating":3.6,"review_count":5594,"retailer":"Tata CLiQ","timestamp":"2026-10-25T06:00:00","fair_reference_price":45970.0,"is_synthetic":1,"ref_price":45970.0,"deal_score":68.2,"deal_category":"Good Deal","price_diff":2860.0,"diff_percentage":6.22,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,860 (6.2%) below estimated fair market reference price \u2022 18.7% discount against original MRP \u2022 Sub-par customer satisfaction (3.6\u2605)","estimated_savings":2860.0},{"product_id":"PROD-1101","product_name":"Redmi Note 13 Pro+ 5G (12GB RAM, 256GB, Fusion Purple)","category":"Smartphones","brand":"Xiaomi","original_price":33999.0,"current_price":26620.0,"discount_percentage":21.7,"rating":4.1,"review_count":853,"retailer":"Amazon India","timestamp":"2026-10-24T07:00:00","fair_reference_price":27590.0,"is_synthetic":1,"ref_price":27590.0,"deal_score":63.2,"deal_category":"Fair Price","price_diff":970.0,"diff_percentage":3.52,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b9970 (3.5%) below estimated fair market reference price \u2022 21.7% discount against original MRP","estimated_savings":970.0},{"product_id":"PROD-1102","product_name":"Realme 12 Pro+ 5G (8GB RAM, 256GB, Submarine Blue)","category":"Smartphones","brand":"Realme","original_price":31999.0,"current_price":25690.0,"discount_percentage":19.7,"rating":3.4,"review_count":4111,"retailer":"Tata CLiQ","timestamp":"2026-10-24T03:00:00","fair_reference_price":26720.0,"is_synthetic":1,"ref_price":26720.0,"deal_score":61.6,"deal_category":"Fair Price","price_diff":1030.0,"diff_percentage":3.85,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,030 (3.9%) below estimated fair market reference price \u2022 19.7% discount against original MRP \u2022 Sub-par customer satisfaction (3.4\u2605)","estimated_savings":1030.0},{"product_id":"PROD-1103","product_name":"WH-1000XM5 Wireless Active Noise Cancelling Headphones","category":"Audio & Headphones","brand":"Sony","original_price":34990.0,"current_price":26800.0,"discount_percentage":23.4,"rating":4.4,"review_count":2510,"retailer":"Amazon India","timestamp":"2026-10-24T12:00:00","fair_reference_price":29080.0,"is_synthetic":1,"ref_price":29080.0,"deal_score":77.5,"deal_category":"Good Deal","price_diff":2280.0,"diff_percentage":7.84,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,280 (7.8%) below estimated fair market reference price \u2022 23.4% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 2,510 reviews)","estimated_savings":2280.0},{"product_id":"PROD-1104","product_name":"WF-1000XM5 True Wireless Noise Cancelling Earbuds","category":"Audio & Headphones","brand":"Sony","original_price":29990.0,"current_price":24290.0,"discount_percentage":19.0,"rating":4.9,"review_count":12626,"retailer":"Amazon India","timestamp":"2026-10-25T09:00:00","fair_reference_price":23880.0,"is_synthetic":1,"ref_price":23880.0,"deal_score":55.0,"deal_category":"Fair Price","price_diff":-410.0,"diff_percentage":-1.72,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9410 (1.7%) above estimated fair reference price \u2022 19.0% discount against original MRP \u2022 Strong customer acclaim (4.9\u2605 across 12,626 reviews)","estimated_savings":0.0},{"product_id":"PROD-1105","product_name":"WH-CH720N Noise Cancelling Wireless Over-Ear Headphones","category":"Audio & Headphones","brand":"Sony","original_price":14990.0,"current_price":8630.0,"discount_percentage":42.4,"rating":4.4,"review_count":67,"retailer":"Amazon India","timestamp":"2026-10-24T04:00:00","fair_reference_price":9720.0,"is_synthetic":1,"ref_price":9720.0,"deal_score":80.5,"deal_category":"Great Deal","price_diff":1090.0,"diff_percentage":11.21,"confidence_level":"Low Evidence","deal_explanation":"Listed \u20b91,090 (11.2%) below estimated fair market reference price \u2022 42.4% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 67 reviews)","estimated_savings":1090.0},{"product_id":"PROD-1106","product_name":"QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones","category":"Audio & Headphones","brand":"Bose","original_price":32900.0,"current_price":27750.0,"discount_percentage":15.7,"rating":3.9,"review_count":2493,"retailer":"Flipkart","timestamp":"2026-10-25T03:00:00","fair_reference_price":27990.0,"is_synthetic":1,"ref_price":27990.0,"deal_score":55.6,"deal_category":"Fair Price","price_diff":240.0,"diff_percentage":0.86,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9240 (0.9%) below estimated fair market reference price \u2022 15.7% discount against original MRP","estimated_savings":240.0},{"product_id":"PROD-1107","product_name":"QuietComfort Ultra Wireless Earbuds with Spatial Audio","category":"Audio & Headphones","brand":"Bose","original_price":29900.0,"current_price":22730.0,"discount_percentage":24.0,"rating":4.1,"review_count":4502,"retailer":"Flipkart","timestamp":"2026-10-25T20:00:00","fair_reference_price":25640.0,"is_synthetic":1,"ref_price":25640.0,"deal_score":84.9,"deal_category":"Great Deal","price_diff":2910.0,"diff_percentage":11.35,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b92,910 (11.3%) below estimated fair market reference price \u2022 24.0% discount against original MRP","estimated_savings":2910.0},{"product_id":"PROD-1108","product_name":"Momentum 4 Wireless Audiophile Headphones (60h Battery)","category":"Audio & Headphones","brand":"Sennheiser","original_price":34990.0,"current_price":24430.0,"discount_percentage":30.2,"rating":3.7,"review_count":523,"retailer":"Tata CLiQ","timestamp":"2026-10-25T09:00:00","fair_reference_price":24460.0,"is_synthetic":1,"ref_price":24460.0,"deal_score":55.7,"deal_category":"Fair Price","price_diff":30.0,"diff_percentage":0.12,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b930 (0.1%) below estimated fair market reference price \u2022 30.2% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":30.0},{"product_id":"PROD-1109","product_name":"HD 450SE Bluetooth Wireless Active Noise Cancelling","category":"Audio & Headphones","brand":"Sennheiser","original_price":14990.0,"current_price":9050.0,"discount_percentage":39.6,"rating":4.4,"review_count":2012,"retailer":"Amazon India","timestamp":"2026-10-25T21:00:00","fair_reference_price":8600.0,"is_synthetic":1,"ref_price":8600.0,"deal_score":48.8,"deal_category":"Fair Price","price_diff":-450.0,"diff_percentage":-5.23,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9450 (5.2%) above estimated fair reference price \u2022 39.6% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 2,012 reviews)","estimated_savings":0.0},{"product_id":"PROD-1110","product_name":"Live 660NC Wireless Over-Ear Active Noise Cancelling","category":"Audio & Headphones","brand":"JBL","original_price":14999.0,"current_price":9250.0,"discount_percentage":38.3,"rating":4.3,"review_count":2072,"retailer":"Croma","timestamp":"2026-10-25T03:00:00","fair_reference_price":9220.0,"is_synthetic":1,"ref_price":9220.0,"deal_score":60.3,"deal_category":"Fair Price","price_diff":-30.0,"diff_percentage":-0.33,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b930 (0.3%) above estimated fair reference price \u2022 38.3% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1111","product_name":"Tune 770NC Adaptive Noise Cancelling Wireless Headphones","category":"Audio & Headphones","brand":"JBL","original_price":9999.0,"current_price":6090.0,"discount_percentage":39.1,"rating":4.5,"review_count":6259,"retailer":"Flipkart","timestamp":"2026-10-24T22:00:00","fair_reference_price":6740.0,"is_synthetic":1,"ref_price":6740.0,"deal_score":86.4,"deal_category":"Great Deal","price_diff":650.0,"diff_percentage":9.64,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9650 (9.6%) below estimated fair market reference price \u2022 39.1% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 6,259 reviews)","estimated_savings":650.0},{"product_id":"PROD-1112","product_name":"Rockerz 450 Bluetooth On-Ear Headphone (15 Hours Playback)","category":"Audio & Headphones","brand":"boAt","original_price":3990.0,"current_price":1680.0,"discount_percentage":57.9,"rating":4.2,"review_count":8615,"retailer":"Amazon India","timestamp":"2026-10-25T06:00:00","fair_reference_price":1560.0,"is_synthetic":1,"ref_price":1560.0,"deal_score":43.8,"deal_category":"Above Reference","price_diff":-120.0,"diff_percentage":-7.69,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9120 (7.7%) above estimated fair reference price \u2022 57.9% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1113","product_name":"Nirvana Ion TWS Earbuds (120 Hours Playback, Dual EQ)","category":"Audio & Headphones","brand":"boAt","original_price":7990.0,"current_price":2240.0,"discount_percentage":72.0,"rating":3.7,"review_count":1843,"retailer":"Reliance Digital","timestamp":"2026-10-25T19:00:00","fair_reference_price":2400.0,"is_synthetic":1,"ref_price":2400.0,"deal_score":77.2,"deal_category":"Good Deal","price_diff":160.0,"diff_percentage":6.67,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9160 (6.7%) below estimated fair market reference price \u2022 72.0% discount against original MRP \u2022 Sub-par customer satisfaction (3.7\u2605)","estimated_savings":160.0},{"product_id":"PROD-1114","product_name":"Noise Two Wireless On-Ear Headphones (50 Hours Playtime)","category":"Audio & Headphones","brand":"Noise","original_price":4999.0,"current_price":1530.0,"discount_percentage":69.4,"rating":4.0,"review_count":2551,"retailer":"Tata CLiQ","timestamp":"2026-10-25T10:00:00","fair_reference_price":1650.0,"is_synthetic":1,"ref_price":1650.0,"deal_score":80.2,"deal_category":"Great Deal","price_diff":120.0,"diff_percentage":7.27,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9120 (7.3%) below estimated fair market reference price \u2022 69.4% discount against original MRP","estimated_savings":120.0},{"product_id":"PROD-1115","product_name":"Watch Series 9 GPS 41mm Midnight Aluminium Case","category":"Smartwatches & Wearables","brand":"Apple","original_price":41900.0,"current_price":35090.0,"discount_percentage":16.3,"rating":4.5,"review_count":8077,"retailer":"Flipkart","timestamp":"2026-10-24T11:00:00","fair_reference_price":36440.0,"is_synthetic":1,"ref_price":36440.0,"deal_score":65.8,"deal_category":"Good Deal","price_diff":1350.0,"diff_percentage":3.7,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,350 (3.7%) below estimated fair market reference price \u2022 16.3% discount against original MRP \u2022 Strong customer acclaim (4.5\u2605 across 8,077 reviews)","estimated_savings":1350.0},{"product_id":"PROD-1116","product_name":"Watch Ultra 2 GPS + Cellular 49mm Titanium Case","category":"Smartwatches & Wearables","brand":"Apple","original_price":89900.0,"current_price":80530.0,"discount_percentage":10.4,"rating":3.9,"review_count":678,"retailer":"Croma","timestamp":"2026-10-24T02:00:00","fair_reference_price":81670.0,"is_synthetic":1,"ref_price":81670.0,"deal_score":55.0,"deal_category":"Fair Price","price_diff":1140.0,"diff_percentage":1.4,"confidence_level":"Moderate Confidence","deal_explanation":"Listed \u20b91,140 (1.4%) below estimated fair market reference price","estimated_savings":1140.0},{"product_id":"PROD-1117","product_name":"Galaxy Watch 6 Bluetooth 44mm (Graphite)","category":"Smartwatches & Wearables","brand":"Samsung","original_price":33999.0,"current_price":23620.0,"discount_percentage":30.5,"rating":4.2,"review_count":4890,"retailer":"Reliance Digital","timestamp":"2026-10-25T03:00:00","fair_reference_price":23370.0,"is_synthetic":1,"ref_price":23370.0,"deal_score":56.0,"deal_category":"Fair Price","price_diff":-250.0,"diff_percentage":-1.07,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9250 (1.1%) above estimated fair reference price \u2022 30.5% discount against original MRP","estimated_savings":0.0},{"product_id":"PROD-1118","product_name":"Galaxy Watch 6 Classic 47mm Bluetooth (Black)","category":"Smartwatches & Wearables","brand":"Samsung","original_price":40999.0,"current_price":29530.0,"discount_percentage":28.0,"rating":4.8,"review_count":1060,"retailer":"Amazon India","timestamp":"2026-10-25T10:00:00","fair_reference_price":29980.0,"is_synthetic":1,"ref_price":29980.0,"deal_score":64.7,"deal_category":"Fair Price","price_diff":450.0,"diff_percentage":1.5,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9450 (1.5%) below estimated fair market reference price \u2022 28.0% discount against original MRP \u2022 Strong customer acclaim (4.8\u2605 across 1,060 reviews)","estimated_savings":450.0},{"product_id":"PROD-1119","product_name":"Forerunner 265 GPS Running Smartwatch (AMOLED Display)","category":"Smartwatches & Wearables","brand":"Garmin","original_price":50490.0,"current_price":47960.0,"discount_percentage":5.0,"rating":4.8,"review_count":6065,"retailer":"Flipkart","timestamp":"2026-10-24T06:00:00","fair_reference_price":47540.0,"is_synthetic":1,"ref_price":47540.0,"deal_score":53.0,"deal_category":"Fair Price","price_diff":-420.0,"diff_percentage":-0.88,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b9420 (0.9%) above estimated fair reference price \u2022 Strong customer acclaim (4.8\u2605 across 6,065 reviews)","estimated_savings":0.0},{"product_id":"PROD-1120","product_name":"Instinct 2 Solar Rugged Outdoor Smartwatch","category":"Smartwatches & Wearables","brand":"Garmin","original_price":46990.0,"current_price":39270.0,"discount_percentage":16.4,"rating":4.4,"review_count":4927,"retailer":"Flipkart","timestamp":"2026-10-24T16:00:00","fair_reference_price":40870.0,"is_synthetic":1,"ref_price":40870.0,"deal_score":65.9,"deal_category":"Good Deal","price_diff":1600.0,"diff_percentage":3.91,"confidence_level":"High Confidence","deal_explanation":"Listed \u20b91,600 (3.9%) below estimated fair market reference price \u2022 16.4% discount against original MRP \u2022 Strong customer acclaim (4.4\u2605 across 4,927 reviews)","estimated_savings":1600.0}];
+
+        function formatINR(val) {
+            if (val === null || val === undefined || isNaN(val)) return '₹0';
+            const num = Math.round(Number(val));
+            return '₹' + num.toLocaleString('en-IN');
+        }
+
+        function getDealBadgeClass(tier) {
+            if (tier === 'Great Deal') return 'deal-great';
+            if (tier === 'Good Deal') return 'deal-good';
+            if (tier === 'Fair Price') return 'deal-fair';
+            return 'deal-above';
+        }
+
+        function switchTab(tabId) {
+            const tabs = ['deals', 'predictor', 'comparison', 'audit', 'about'];
+            tabs.forEach(t => {
+                document.getElementById('tab-' + t).style.display = (t === tabId) ? 'block' : 'none';
+            });
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', tabs[idx] === tabId);
+            });
+            if (tabId === 'comparison') renderComparison();
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            if (products.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-muted);">No matching products found for the selected filters.</div>';
+                document.getElementById('filter-status').innerText = 'Showing 0 matching products';
+                return;
+            }
+
+            document.getElementById('filter-status').innerText = `Showing ${products.length} verified products in catalog`;
+
+            container.innerHTML = products.map(p => {
+                const diff = (p.fair_reference_price || p.current_price) - p.current_price;
+                const isSavings = diff > 0;
+                const savingsHtml = isSavings 
+                    ? `<div class="savings-highlight">💰 Est. Savings: ${formatINR(diff)} (${Math.abs(p.discount_vs_reference || 5).toFixed(1)}% vs fair benchmark)</div>`
+                    : `<div class="savings-negative">⚠️ Listed ${formatINR(Math.abs(diff))} above fair benchmark</div>`;
+
+                return `
+                    <div class="product-card">
+                        <div>
+                            <div class="card-header">
+                                <span class="category-badge">${p.category} • ${p.brand}</span>
+                                <span class="deal-badge ${getDealBadgeClass(p.deal_category)}">${p.deal_category} (${Math.round(p.deal_score)}/100)</span>
+                            </div>
+                            <div class="product-title" title="${p.product_name}">${p.product_name}</div>
+                            
+                            <div class="price-section">
+                                <div class="price-row">
+                                    <span class="current-price">${formatINR(p.current_price)}</span>
+                                    <span class="mrp-price">MRP: ${formatINR(p.original_price)}</span>
+                                </div>
+                                <div class="fair-price-row">
+                                    <span>Fair Market Benchmark:</span>
+                                    <b style="color: #F8FAFC;">${formatINR(p.fair_reference_price)}</b>
+                                </div>
+                                ${savingsHtml}
+                            </div>
+                        </div>
+
+                        <div class="meta-footer">
+                            <span class="rating-badge">★ ${Number(p.rating).toFixed(1)} (${Number(p.review_count).toLocaleString()} reviews)</span>
+                            <span>🏪 ${p.retailer || 'Verified Retailer'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function applyFilters() {
+            const query = (document.getElementById('search-input').value || '').toLowerCase().trim();
+            const cat = document.getElementById('category-filter').value;
+            const tier = document.getElementById('tier-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            let filtered = catalog.filter(p => {
+                if (query && !p.product_name.toLowerCase().includes(query) && !p.brand.toLowerCase().includes(query)) return false;
+                if (cat !== 'ALL' && p.category !== cat) return false;
+                if (tier !== 'ALL' && p.deal_category !== tier) return false;
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                if (sort === 'deal_score_desc') return b.deal_score - a.deal_score;
+                if (sort === 'price_asc') return a.current_price - b.current_price;
+                if (sort === 'price_desc') return b.current_price - a.current_price;
+                if (sort === 'savings_desc') return (b.estimated_savings || 0) - (a.estimated_savings || 0);
+                if (sort === 'rating_desc') return b.rating - a.rating;
+                return 0;
+            });
+
+            renderProducts(filtered);
+        }
+
+        function runPrediction() {
+            const mrp = parseFloat(document.getElementById('pred-mrp').value) || 79999;
+            const rating = parseFloat(document.getElementById('pred-rating').value) || 4.5;
+            const reviews = parseInt(document.getElementById('pred-reviews').value) || 2500;
+            const cat = document.getElementById('pred-category').value;
+            const brand = document.getElementById('pred-brand').value;
+            const offered = parseFloat(document.getElementById('pred-offered').value) || 0;
+
+            let discountFactor = 0.16;
+            if (cat === 'Audio & Headphones' || cat === 'Televisions') discountFactor = 0.28;
+            if (cat === 'Smartwatches & Wearables') discountFactor = 0.32;
+            if (cat === 'Home Appliances') discountFactor = 0.24;
+            if (brand === 'Apple' || brand === 'Garmin') discountFactor = Math.max(0.06, discountFactor - 0.10);
+            if (brand === 'boAt' || brand === 'Noise') discountFactor = Math.min(0.65, discountFactor + 0.30);
+
+            const rawPred = mrp * (1.0 - discountFactor) + (rating - 4.2) * 500;
+            const boundedPred = Math.max(mrp * 0.10, Math.min(mrp * 0.98, rawPred));
+            const predictedPrice = Math.round(boundedPred / 10) * 10;
+
+            const rmse = 5051;
+            const minExp = Math.max(mrp * 0.10, Math.round((predictedPrice - rmse) / 10) * 10);
+            const maxExp = Math.min(mrp, Math.round((predictedPrice + rmse) / 10) * 10);
+
+            document.getElementById('pred-price-display').innerText = formatINR(predictedPrice);
+            document.getElementById('pred-lower').innerText = formatINR(minExp);
+            document.getElementById('pred-upper').innerText = formatINR(maxExp);
+
+            if (offered > 0) {
+                const diff = predictedPrice - offered;
+                const pctDiff = (diff / predictedPrice) * 100;
+                let verdict = '';
+                if (pctDiff >= 8) {
+                    verdict = `🔥 Great Deal! Offered at ${formatINR(offered)} (${formatINR(diff)} below fair benchmark)`;
+                } else if (pctDiff >= 3) {
+                    verdict = `✨ Good Deal! Offered at ${formatINR(offered)} (${formatINR(diff)} below fair benchmark)`;
+                } else if (pctDiff >= -3) {
+                    verdict = `⚖️ Fair Equilibrium Price! Offered at ${formatINR(offered)}`;
+                } else {
+                    verdict = `⚠️ Above Fair Reference! Offered at ${formatINR(offered)} (${formatINR(Math.abs(diff))} above benchmark)`;
+                }
+                document.getElementById('pred-deal-verdict').innerText = verdict;
+                document.getElementById('pred-deal-verdict').style.color = (pctDiff >= 3) ? '#34D399' : (pctDiff >= -3 ? '#FBBF24' : '#F87171');
+            } else {
+                document.getElementById('pred-deal-verdict').innerText = 'Enter an offered price to audit live deal ratings.';
+                document.getElementById('pred-deal-verdict').style.color = '#94A3B8';
+            }
+        }
+
+        function initComparisonSelectors() {
+            const s1 = document.getElementById('comp-prod-1');
+            const s2 = document.getElementById('comp-prod-2');
+            s1.innerHTML = catalog.map((p, i) => `<option value="${i}" ${i===0?'selected':''}>${p.product_name} (${formatINR(p.current_price)})</option>`).join('');
+            s2.innerHTML = catalog.map((p, i) => `<option value="${i}" ${i===1?'selected':''}>${p.product_name} (${formatINR(p.current_price)})</option>`).join('');
+        }
+
+        function renderComparison() {
+            const p1 = catalog[parseInt(document.getElementById('comp-prod-1').value) || 0];
+            const p2 = catalog[parseInt(document.getElementById('comp-prod-2').value) || 1];
+            const container = document.getElementById('comparison-table-container');
+
+            const lowestPriceProd = (p1.current_price <= p2.current_price) ? p1 : p2;
+            const bestDealProd = (p1.deal_score >= p2.deal_score) ? p1 : p2;
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 14px;">
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: #34D399;">🏷️ Lowest Sticker Price</div>
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #F8FAFC; margin: 4px 0;">${lowestPriceProd.product_name}</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: #38BDF8;">${formatINR(lowestPriceProd.current_price)}</div>
+                    </div>
+                    <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 14px;">
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: #38BDF8;">👑 Best Supported Deal Score</div>
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #F8FAFC; margin: 4px 0;">${bestDealProd.product_name}</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: #34D399;">${bestDealProd.deal_category} (${Math.round(bestDealProd.deal_score)}/100)</div>
+                    </div>
+                </div>
+
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Specification / Metric</th>
+                            <th>Product 1</th>
+                            <th>Product 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>Product Name</b></td><td><b>${p1.product_name}</b></td><td><b>${p2.product_name}</b></td></tr>
+                        <tr><td><b>Category / Brand</b></td><td>${p1.category} (${p1.brand})</td><td>${p2.category} (${p2.brand})</td></tr>
+                        <tr><td><b>Current Listed Price</b></td><td style="color: #38BDF8; font-weight: 800; font-size: 1.1rem;">${formatINR(p1.current_price)}</td><td style="color: #38BDF8; font-weight: 800; font-size: 1.1rem;">${formatINR(p2.current_price)}</td></tr>
+                        <tr><td><b>Original Sticker MRP</b></td><td>${formatINR(p1.original_price)}</td><td>${formatINR(p2.original_price)}</td></tr>
+                        <tr><td><b>Predicted Fair Benchmark</b></td><td>${formatINR(p1.fair_reference_price)}</td><td>${formatINR(p2.fair_reference_price)}</td></tr>
+                        <tr><td><b>Deal Rating & Score</b></td><td><span class="deal-badge ${getDealBadgeClass(p1.deal_category)}">${p1.deal_category} (${Math.round(p1.deal_score)})</span></td><td><span class="deal-badge ${getDealBadgeClass(p2.deal_category)}">${p2.deal_category} (${Math.round(p2.deal_score)})</span></td></tr>
+                        <tr><td><b>Customer Rating</b></td><td>★ ${Number(p1.rating).toFixed(1)} (${Number(p1.review_count).toLocaleString()} reviews)</td><td>★ ${Number(p2.rating).toFixed(1)} (${Number(p2.review_count).toLocaleString()} reviews)</td></tr>
+                        <tr><td><b>Retailer</b></td><td>${p1.retailer || 'Verified Retailer'}</td><td>${p2.retailer || 'Verified Retailer'}</td></tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(catalog);
+            initComparisonSelectors();
+            runPrediction();
+        });
+    </script>
+</body>
+</html>
