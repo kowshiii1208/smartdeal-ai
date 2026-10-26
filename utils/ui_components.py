@@ -340,6 +340,18 @@ html, body, [class*="css"], .stApp {
 """
 
 
+def clean_html(html_str: str) -> str:
+    """Strip leading and trailing whitespace from every line of HTML so CommonMark never treats it as a code block."""
+    if not html_str:
+        return ""
+    return "\n".join(line.strip() for line in html_str.splitlines() if line.strip())
+
+
+def render_html(html_str: str):
+    """Safely render HTML via Streamlit markdown without CommonMark indentation code-block bugs."""
+    st.markdown(clean_html(html_str), unsafe_allow_html=True)
+
+
 def apply_custom_css():
     """Inject modern fintech dark navy CSS styles into the Streamlit session."""
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -347,7 +359,7 @@ def apply_custom_css():
 
 def render_hero_banner(title: str, subtitle: str, badge: str = "SmartDeal AI", icon: str = "🏷️"):
     """Render a polished, executive hero header with soft lighting and badge."""
-    st.markdown(
+    render_html(
         f"""
         <div class="hero-banner">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
@@ -360,14 +372,13 @@ def render_hero_banner(title: str, subtitle: str, badge: str = "SmartDeal AI", i
             </div>
             <div class="hero-subtitle">{subtitle}</div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
 def render_kpi(label: str, value: str, subtext: str = "", border_color: str = "#3B82F6", icon: str = "📊"):
     """Render an elevated, responsive KPI metric card with icon and border accent."""
-    st.markdown(
+    render_html(
         f"""
         <div class="kpi-container" style="border-top: 3px solid {border_color};">
             <div class="kpi-top-row">
@@ -377,8 +388,7 @@ def render_kpi(label: str, value: str, subtext: str = "", border_color: str = "#
             <div class="kpi-value">{value}</div>
             <div class="kpi-subtext">{subtext}</div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -426,7 +436,7 @@ def render_product_card_html(row, show_score_bar: bool = True) -> str:
         </div>
         """
 
-    return f"""
+    raw_card_html = f"""
     <div class="product-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <span class="product-brand-chip">{row['brand']} • {row['category']}</span>
@@ -456,17 +466,17 @@ def render_product_card_html(row, show_score_bar: bool = True) -> str:
         </div>
     </div>
     """
+    return clean_html(raw_card_html)
 
 
 def render_empty_state(title: str, description: str, icon: str = "🔍"):
     """Render a clean, user-friendly empty state container."""
-    st.markdown(
+    render_html(
         f"""
         <div style="text-align: center; padding: 48px 24px; background: rgba(19, 30, 54, 0.5); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 14px; margin: 20px 0;">
             <div style="font-size: 2.8rem; margin-bottom: 12px;">{icon}</div>
             <div style="font-size: 1.25rem; font-weight: 700; color: #F8FAFC; margin-bottom: 6px;">{title}</div>
             <div style="font-size: 0.90rem; color: #94A3B8; max-width: 480px; margin: 0 auto; line-height: 1.55;">{description}</div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )

@@ -9,7 +9,7 @@ import streamlit as st
 import pandas as pd
 from typing import Dict, Any
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state, render_html
 from utils.formatting import format_inr, format_percent, get_deal_badge_html
 from ml.predict import predict_fair_price, load_model_pipeline
 from services.deal_engine import calculate_deal_metrics
@@ -114,7 +114,7 @@ with col_result:
                 st.markdown(f'<div class="callout-warning">⚠️ <b>Extrapolation Warning:</b> {w}</div>', unsafe_allow_html=True)
 
             # Main Prediction Result Box
-            st.markdown(
+            render_html(
                 f"""
                 <div style="background: linear-gradient(135deg, rgba(20, 32, 57, 0.8) 0%, rgba(12, 19, 34, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 14px; padding: 26px; text-align: center; margin-bottom: 20px; box-shadow: 0 12px 30px -8px rgba(6, 182, 212, 0.2);">
                     <div style="font-size: 0.80rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: #94A3B8;">
@@ -138,9 +138,7 @@ with col_result:
                         R²: <b style="color: #34D399;">{r2:.4f}</b>
                     </div>
                 </div>
-                """,
-                unsafe_allow_html=True,
-
+                """
             )
 
             # Deal Simulation Evaluation
@@ -155,7 +153,7 @@ with col_result:
                 )
 
                 st.markdown("##### 🏷️ Evaluated Deal Rating")
-                st.markdown(
+                render_html(
                     f"""
                     <div class="product-card" style="margin-bottom: 16px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -169,8 +167,7 @@ with col_result:
                             📝 <i>{deal_metrics['explanation']}</i>
                         </div>
                     </div>
-                    """,
-                    unsafe_allow_html=True,
+                    """
                 )
 
                 # Log to SQLite
@@ -188,15 +185,14 @@ with col_result:
 
             # Factors explanation
             st.markdown("##### 🔍 Value Driver Breakdown")
-            st.markdown(
+            render_html(
                 f"""
                 <div style="background: rgba(19, 30, 54, 0.5); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 14px 16px; font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">
                     <div>• <b>MSRP Scale Factor:</b> Original price of {format_inr(original_price)} sets the primary base valuation anchor.</div>
                     <div>• <b>Equilibrium Category Discount:</b> Model calculates an expected equilibrium discount of <b>{factors['implied_fair_discount_pct']}%</b> for {brand} in {category}.</div>
                     <div>• <b>Customer Feedback Influence:</b> Rating of {rating}★ with {review_count:,} reviews ({factors['rating_impact']}) maintains price resilience.</div>
                 </div>
-                """,
-                unsafe_allow_html=True,
+                """
             )
 
         except Exception as e:

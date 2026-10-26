@@ -11,7 +11,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_html
 from utils.formatting import format_inr
 from utils.validation import validate_and_clean_products
 from services.product_service import get_all_products
@@ -150,7 +150,7 @@ with tab_export:
     e_col1, e_col2 = st.columns(2)
 
     with e_col1:
-        st.markdown(
+        render_html(
             """
             <div class="content-box">
                 <h5 style="color: #60A5FA; margin-top: 0;">Cleaned Catalog Dataset (CSV)</h5>
@@ -158,8 +158,7 @@ with tab_export:
                     Export the current deduplicated, normalized, and deal-enriched product catalog including computed fair reference benchmarks.
                 </p>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
         csv_buffer = io.StringIO()
         df.to_csv(csv_buffer, index=False)
@@ -172,7 +171,7 @@ with tab_export:
         )
 
     with e_col2:
-        st.markdown(
+        render_html(
             """
             <div class="content-box">
                 <h5 style="color: #34D399; margin-top: 0;">Model Metrics & Benchmark Results (JSON)</h5>
@@ -180,8 +179,7 @@ with tab_export:
                     Export out-of-sample held-out test evaluation scores (MAE, RMSE, R²), split details, and feature importances for college review documentation.
                 </p>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
         if MODEL_METRICS_PATH.exists():
             with open(MODEL_METRICS_PATH, "r", encoding="utf-8") as f:

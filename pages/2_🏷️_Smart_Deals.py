@@ -7,7 +7,7 @@ providing multi-criteria filtering, sorting, deal scoring (0-100), and evidence 
 import streamlit as st
 import pandas as pd
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state, render_product_card_html, render_html
 from utils.formatting import format_inr, format_percent, get_deal_badge_html
 from services.product_service import get_all_products, filter_and_sort_products, add_to_watchlist
 
@@ -131,7 +131,7 @@ else:
         col_to_use = card_cols[idx % 2]
         with col_to_use:
             # HTML Card Container
-            st.markdown(render_product_card_html(row, show_score_bar=True), unsafe_allow_html=True)
+            render_html(render_product_card_html(row, show_score_bar=True))
             # Add to Watchlist quick button
             btn_key = f"watch_{row['product_id']}_{idx}"
             if st.button(f"⭐ Add {row['product_id']} to Watchlist", key=btn_key):

@@ -9,7 +9,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_empty_state, render_html
 from utils.formatting import format_inr, format_percent, get_deal_badge_html
 from services.product_service import get_all_products, compare_selected_products
 
@@ -63,15 +63,14 @@ comparison = compare_selected_products(selected_ids)
 
 # Warning if comparing items across different categories
 if comparison.get("categories_differ", False):
-    st.markdown(
+    render_html(
         """
         <div class="callout-warning">
             ⚠️ <b>Cross-Category Comparison Detected:</b><br>
             You have selected products from different categories (e.g., a Smartphone vs a Television). 
             While prices and deal scores can be viewed, please note that comparing prices across different product domains does not imply equivalent utility or value.
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 prods = comparison["products"]
@@ -87,7 +86,7 @@ lowest_item = next(p for p in prods if p["product_id"] == lowest_price_id)
 best_deal_item = next(p for p in prods if p["product_id"] == best_deal_id)
 
 with h_col1:
-    st.markdown(
+    render_html(
         f"""
         <div style="background: rgba(59, 130, 246, 0.1); border: 2px solid #3B82F6; border-radius: 12px; padding: 18px;">
             <div style="font-size: 0.80rem; text-transform: uppercase; font-weight: 700; color: #60A5FA; letter-spacing: 0.05em;">
@@ -103,12 +102,11 @@ with h_col1:
                 Deal Score: {lowest_item['deal_score']:.0f}/100 • {lowest_item['deal_category']}
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 with h_col2:
-    st.markdown(
+    render_html(
         f"""
         <div style="background: rgba(16, 185, 129, 0.1); border: 2px solid #10B981; border-radius: 12px; padding: 18px;">
             <div style="font-size: 0.80rem; text-transform: uppercase; font-weight: 700; color: #34D399; letter-spacing: 0.05em;">
@@ -124,8 +122,7 @@ with h_col2:
                 Deal Score: <b>{best_deal_item['deal_score']:.0f}/100</b> ({best_deal_item['deal_category']}) • Est. Savings: {format_inr(best_deal_item['estimated_savings'])}
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -148,7 +145,7 @@ for idx, p in enumerate(prods):
 
         tags_html = " ".join(badge_tags)
 
-        st.markdown(
+        render_html(
             f"""
             <div class="product-card" style="border-top: 3px solid {'#10B981' if is_best_deal else ('#3B82F6' if is_lowest else '#334155')};">
                 <div style="margin-bottom: 8px;">{tags_html}</div>
@@ -174,8 +171,7 @@ for idx, p in enumerate(prods):
                     📝 {p['deal_explanation']}
                 </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
 
 # Visual Comparison Chart

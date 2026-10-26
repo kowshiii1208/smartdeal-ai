@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_product_card_html
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_product_card_html, render_html
 from utils.formatting import format_inr, format_percent, get_deal_badge_html
 from services.product_service import get_all_products
 from ml.predict import load_model_pipeline
@@ -40,7 +40,7 @@ except Exception:
 
 # Sidebar Setup
 with st.sidebar:
-    st.markdown(
+    render_html(
         """
         <div style="padding: 6px 0 14px 0;">
             <div style="font-size: 1.35rem; font-weight: 800; color: #F8FAFC; letter-spacing: -0.02em;">
@@ -50,11 +50,10 @@ with st.sidebar:
                 Price Intelligence Platform • v2.4
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
     
-    st.markdown(
+    render_html(
         """
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 10px; padding: 12px 14px; font-size: 0.80rem; color: #94A3B8; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; color: #34D399; font-weight: 700; margin-bottom: 6px;">
@@ -65,30 +64,27 @@ with st.sidebar:
             <div>• ML Engine: <b>Scikit-Learn Ready</b></div>
             <div>• Ingestion Mode: <b>Demo Data Active</b></div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     st.markdown("##### 📌 **Active Model Spec**")
-    st.markdown(
+    render_html(
         f"""
         <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 10px 12px; font-size: 0.78rem; color: #94A3B8; line-height: 1.6;">
             <div>Champion: <b style="color: #38BDF8;">{best_model}</b></div>
             <div>Held-out R²: <b style="color: #F8FAFC;">{best_r2:.4f}</b></div>
             <div>Test RMSE: <b style="color: #F8FAFC;">±{format_inr(best_rmse)}</b></div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     st.markdown("---")
-    st.markdown(
+    render_html(
         """
         <div style="font-size: 0.75rem; color: #64748B; line-height: 1.5;">
             💡 <b>Quick Tip:</b> Navigate to <b>Smart Deals</b> to rank products by deal score, or <b>Price Prediction</b> to value custom product specs.
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -127,7 +123,7 @@ if not top_deals.empty:
     deal_cols = st.columns(len(top_deals))
     for idx, (_, row) in enumerate(top_deals.iterrows()):
         with deal_cols[idx]:
-            st.markdown(render_product_card_html(row, show_score_bar=True), unsafe_allow_html=True)
+            render_html(render_product_card_html(row, show_score_bar=True))
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -137,7 +133,7 @@ st.markdown("### 🧭 **Platform Capabilities & Navigation Directory**")
 m_col1, m_col2 = st.columns(2)
 
 with m_col1:
-    st.markdown(
+    render_html(
         """
         <div class="content-box">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
@@ -172,12 +168,11 @@ with m_col1:
                 Interactive Plotly timeline charts showing moving averages, historical sale event dips, and projected price forecasts with confidence bands.
             </p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 with m_col2:
-    st.markdown(
+    render_html(
         """
         <div class="content-box">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
@@ -212,18 +207,16 @@ with m_col2:
                 Technical architecture, mathematical deal scoring formulas, engineering trade-offs, and viva presentation Q&A guide.
             </p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 # Ethical Disclaimer Callout
-st.markdown(
+render_html(
     """
     <div class="callout-info">
         <b>Data Authenticity & Provenance Notice:</b><br>
         All records in the demonstration dataset are clearly labeled as synthetic demo observations generated with fixed random seeds for academic presentation and placement testing. 
         Live web scraping is disabled by default to respect retailer terms and robot policies.
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )

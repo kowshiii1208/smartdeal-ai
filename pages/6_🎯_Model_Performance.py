@@ -11,7 +11,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
-from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi
+from utils.ui_components import apply_custom_css, render_hero_banner, render_kpi, render_html
 from utils.formatting import format_inr
 from ml.predict import load_model_pipeline
 from ml.train import run_training_pipeline
@@ -187,7 +187,7 @@ st.markdown("#### 🛡️ Data Leakage Precautions & Academic Defensibility")
 leak_c1, leak_c2 = st.columns(2)
 
 with leak_c1:
-    st.markdown(
+    render_html(
         """
         <div class="content-box">
             <h5 style="color: #60A5FA; margin-top: 0;">Target Leakage Prevention</h5>
@@ -197,12 +197,11 @@ with leak_c1:
                 <li><b>Strict Chronological History:</b> Time-series forecasting uses strictly past-to-future chronological holdout sets, never random train-test splitting.</li>
             </ul>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 with leak_c2:
-    st.markdown(
+    render_html(
         """
         <div class="content-box">
             <h5 style="color: #F87171; margin-top: 0;">Known Limitations & Failure Modes</h5>
@@ -212,8 +211,7 @@ with leak_c2:
                 <li><b>Exogenous Retail Factors:</b> Models cannot anticipate unannounced manufacturer cashback or bank-specific credit card instant discounts.</li>
             </ul>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 st.markdown("<br>", unsafe_allow_html=True)
