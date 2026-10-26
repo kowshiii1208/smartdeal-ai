@@ -1,0 +1,121 @@
+product_id,product_name,category,brand,original_price,current_price,discount_percentage,rating,review_count,retailer,timestamp,fair_reference_price,is_synthetic
+PROD-1001,"MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD, Space Grey)",Laptops,Apple,114900.0,113850.0,0.9,3.9,2650,Amazon India,2026-10-24T07:00:00,102270.0,1
+PROD-1002,"MacBook Pro M3 (14.2-inch, 16GB RAM, 512GB SSD, Space Black)",Laptops,Apple,199900.0,199900.0,0.0,4.1,962,Amazon India,2026-10-25T16:00:00,190980.0,1
+PROD-1003,"Inspiron 15 3530 (Intel Core i5-1335U, 16GB RAM, 512GB SSD)",Laptops,Dell,68500.0,51690.0,24.5,4.6,290,Amazon India,2026-10-25T22:00:00,54500.0,1
+PROD-1004,"XPS 13 9315 (Intel Core i7-1250U, 16GB RAM, 512GB SSD, FHD+)",Laptops,Dell,124990.0,102600.0,17.9,4.1,3704,Flipkart,2026-10-24T00:00:00,108320.0,1
+PROD-1005,"Pavilion 15 (AMD Ryzen 7 7730U, 16GB RAM, 512GB SSD, Backlit KB)",Laptops,HP,72000.0,50270.0,30.2,4.1,5635,Amazon India,2026-10-25T06:00:00,58510.0,1
+PROD-1006,"Victus Gaming Laptop (Intel Core i5-12450H, RTX 3050, 144Hz)",Laptops,HP,79999.0,57470.0,28.2,4.1,1796,Reliance Digital,2026-10-25T08:00:00,59620.0,1
+PROD-1007,"ROG Zephyrus G14 (AMD Ryzen 9, RTX 4060, 16GB RAM, 1TB SSD)",Laptops,ASUS,159990.0,139620.0,12.7,4.9,7573,Amazon India,2026-10-25T09:00:00,140680.0,1
+PROD-1008,"Vivobook 15 (Intel Core i3-1215U, 8GB RAM, 512GB SSD)",Laptops,ASUS,49990.0,34710.0,30.6,4.4,5208,Tata CLiQ,2026-10-25T15:00:00,34110.0,1
+PROD-1009,"IdeaPad Slim 3 (Intel Core i5-12450H, 16GB RAM, 512GB SSD)",Laptops,Lenovo,64990.0,45980.0,29.3,3.9,270,Amazon India,2026-10-24T00:00:00,50230.0,1
+PROD-1010,"LOQ 15 Gaming (AMD Ryzen 7 7840HS, RTX 4050, 16GB, 512GB)",Laptops,Lenovo,94990.0,72070.0,24.1,3.9,2124,Croma,2026-10-25T17:00:00,75390.0,1
+PROD-1011,"Nitro V 15 (Intel Core i5-13420H, RTX 4050 6GB, 16GB, 512GB)",Laptops,Acer,82999.0,77330.0,6.8,4.5,5246,Croma,2026-10-24T04:00:00,69220.0,1
+PROD-1012,"Aspire Lite (AMD Ryzen 5 5500U, 16GB RAM, 512GB SSD)",Laptops,Acer,52990.0,30840.0,41.8,3.8,6765,Amazon India,2026-10-24T00:00:00,34880.0,1
+PROD-1013,"iPhone 15 (128GB, Blue)",Smartphones,Apple,79900.0,65270.0,18.3,4.6,2580,Flipkart,2026-10-24T13:00:00,69920.0,1
+PROD-1014,"iPhone 15 Pro (256GB, Natural Titanium)",Smartphones,Apple,134900.0,130850.0,3.0,4.8,2713,Flipkart,2026-10-25T18:00:00,129500.0,1
+PROD-1015,"Galaxy S24 5G (8GB RAM, 128GB, Onyx Black)",Smartphones,Samsung,79999.0,68050.0,14.9,3.8,6316,Flipkart,2026-10-24T10:00:00,70250.0,1
+PROD-1016,"Galaxy S24 Ultra (12GB RAM, 256GB, Titanium Gray)",Smartphones,Samsung,129999.0,108300.0,16.7,4.0,4413,Amazon India,2026-10-24T20:00:00,114060.0,1
+PROD-1017,"Galaxy A55 5G (8GB RAM, 128GB, Awesome Iceblue)",Smartphones,Samsung,42999.0,30470.0,29.1,4.5,7257,Reliance Digital,2026-10-25T21:00:00,36840.0,1
+PROD-1018,"OnePlus 12 (16GB RAM, 512GB, Silky Black)",Smartphones,OnePlus,69999.0,51510.0,26.4,4.8,2232,Reliance Digital,2026-10-25T22:00:00,62000.0,1
+PROD-1019,"OnePlus 12R (8GB RAM, 128GB, Cool Blue)",Smartphones,OnePlus,39999.0,32820.0,17.9,4.7,1273,Reliance Digital,2026-10-25T18:00:00,36580.0,1
+PROD-1020,"OnePlus Nord CE4 5G (8GB RAM, 128GB, Celadon Marble)",Smartphones,OnePlus,24999.0,21820.0,12.7,4.2,1277,Amazon India,2026-10-25T10:00:00,22990.0,1
+PROD-1021,"Pixel 8 (128GB, Hazel)",Smartphones,Google,75999.0,56290.0,25.9,4.0,9747,Tata CLiQ,2026-10-25T09:00:00,59630.0,1
+PROD-1022,"Pixel 8a (128GB, Bay Blue)",Smartphones,Google,52999.0,40730.0,23.1,3.9,549,Amazon India,2026-10-24T15:00:00,43090.0,1
+PROD-1023,"Redmi Note 13 Pro+ 5G (12GB RAM, 256GB, Fusion Purple)",Smartphones,Xiaomi,33999.0,26680.0,21.5,4.5,1324,Amazon India,2026-10-24T09:00:00,27580.0,1
+PROD-1024,"Realme 12 Pro+ 5G (8GB RAM, 256GB, Submarine Blue)",Smartphones,Realme,31999.0,24700.0,22.8,4.6,454,Croma,2026-10-25T22:00:00,26830.0,1
+PROD-1025,WH-1000XM5 Wireless Active Noise Cancelling Headphones,Audio & Headphones,Sony,34990.0,28580.0,18.3,4.8,9612,Flipkart,2026-10-24T12:00:00,28730.0,1
+PROD-1026,WF-1000XM5 True Wireless Noise Cancelling Earbuds,Audio & Headphones,Sony,29990.0,23910.0,20.3,4.9,5158,Amazon India,2026-10-25T11:00:00,24080.0,1
+PROD-1027,WH-CH720N Noise Cancelling Wireless Over-Ear Headphones,Audio & Headphones,Sony,14990.0,9410.0,37.2,4.5,603,Amazon India,2026-10-24T02:00:00,10030.0,1
+PROD-1028,QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones,Audio & Headphones,Bose,32900.0,22880.0,30.5,4.2,3523,Flipkart,2026-10-24T06:00:00,25830.0,1
+PROD-1029,QuietComfort Ultra Wireless Earbuds with Spatial Audio,Audio & Headphones,Bose,29900.0,24990.0,16.4,4.2,1412,Reliance Digital,2026-10-24T03:00:00,24960.0,1
+PROD-1030,Momentum 4 Wireless Audiophile Headphones (60h Battery),Audio & Headphones,Sennheiser,34990.0,23920.0,31.6,4.8,638,Reliance Digital,2026-10-24T13:00:00,24070.0,1
+PROD-1031,HD 450SE Bluetooth Wireless Active Noise Cancelling,Audio & Headphones,Sennheiser,14990.0,8580.0,42.8,4.4,4998,Amazon India,2026-10-24T21:00:00,8530.0,1
+PROD-1032,Live 660NC Wireless Over-Ear Active Noise Cancelling,Audio & Headphones,JBL,14999.0,9000.0,40.0,4.4,419,Flipkart,2026-10-25T09:00:00,9180.0,1
+PROD-1033,Tune 770NC Adaptive Noise Cancelling Wireless Headphones,Audio & Headphones,JBL,9999.0,5960.0,40.4,4.0,465,Croma,2026-10-24T19:00:00,6380.0,1
+PROD-1034,Rockerz 450 Bluetooth On-Ear Headphone (15 Hours Playback),Audio & Headphones,boAt,3990.0,1480.0,62.9,4.0,2153,Amazon India,2026-10-24T10:00:00,1470.0,1
+PROD-1035,"Nirvana Ion TWS Earbuds (120 Hours Playback, Dual EQ)",Audio & Headphones,boAt,7990.0,2210.0,72.3,4.6,1356,Flipkart,2026-10-25T06:00:00,2400.0,1
+PROD-1036,Noise Two Wireless On-Ear Headphones (50 Hours Playtime),Audio & Headphones,Noise,4999.0,1410.0,71.8,3.8,1734,Croma,2026-10-25T23:00:00,1500.0,1
+PROD-1037,Watch Series 9 GPS 41mm Midnight Aluminium Case,Smartwatches & Wearables,Apple,41900.0,32170.0,23.2,4.3,4395,Tata CLiQ,2026-10-25T13:00:00,37610.0,1
+PROD-1038,Watch Ultra 2 GPS + Cellular 49mm Titanium Case,Smartwatches & Wearables,Apple,89900.0,86810.0,3.4,4.7,1199,Amazon India,2026-10-24T03:00:00,81170.0,1
+PROD-1039,Galaxy Watch 6 Bluetooth 44mm (Graphite),Smartwatches & Wearables,Samsung,33999.0,23400.0,31.2,4.5,14995,Amazon India,2026-10-24T20:00:00,23000.0,1
+PROD-1040,Galaxy Watch 6 Classic 47mm Bluetooth (Black),Smartwatches & Wearables,Samsung,40999.0,29850.0,27.2,4.7,1922,Croma,2026-10-25T02:00:00,28320.0,1
+PROD-1041,Forerunner 265 GPS Running Smartwatch (AMOLED Display),Smartwatches & Wearables,Garmin,50490.0,45400.0,10.1,4.6,875,Croma,2026-10-25T06:00:00,45660.0,1
+PROD-1042,Instinct 2 Solar Rugged Outdoor Smartwatch,Smartwatches & Wearables,Garmin,46990.0,42070.0,10.5,4.8,1823,Flipkart,2026-10-25T14:00:00,38560.0,1
+PROD-1043,Charge 6 Advanced Health & Fitness Tracker with Google Apps,Smartwatches & Wearables,Fitbit,14999.0,12250.0,18.3,3.9,298,Amazon India,2026-10-25T10:00:00,12060.0,1
+PROD-1044,ColorFit Pulse 2 Max 1.85'' Display Bluetooth Calling Smartwatch,Smartwatches & Wearables,Noise,5999.0,1570.0,73.8,3.7,2775,Flipkart,2026-10-25T02:00:00,1800.0,1
+PROD-1045,Halo Plus 1.46'' Metallic AMOLED Display Smartwatch,Smartwatches & Wearables,Noise,7999.0,2600.0,67.5,4.0,1209,Flipkart,2026-10-25T17:00:00,3100.0,1
+PROD-1046,GTR 4 Smart Watch with Dual-Band GPS & 14-Day Battery,Smartwatches & Wearables,Amazfit,23999.0,15280.0,36.3,4.9,16516,Flipkart,2026-10-25T18:00:00,16280.0,1
+PROD-1047,Active Smart Watch 1.75'' AMOLED Display with AI Coach,Smartwatches & Wearables,Amazfit,12999.0,10670.0,17.9,4.7,850,Amazon India,2026-10-24T23:00:00,9770.0,1
+PROD-1048,OLED evo C3 Series 55-inch 4K Ultra HD Smart TV (OLED55C3PSA),Televisions,LG,169990.0,113050.0,33.5,4.0,13273,Amazon India,2026-10-25T17:00:00,123220.0,1
+PROD-1049,UR75 Series 43-inch 4K Ultra HD Smart LED TV (43UR7500PSC),Televisions,LG,49990.0,31450.0,37.1,4.6,8264,Amazon India,2026-10-25T01:00:00,33370.0,1
+PROD-1050,Crystal iSmart 4K Ultra HD 55-inch Smart LED TV,Televisions,Samsung,68900.0,40300.0,41.5,3.8,16522,Amazon India,2026-10-25T01:00:00,40210.0,1
+PROD-1051,The Frame Series 55-inch QLED 4K Smart TV with Matte Display,Televisions,Samsung,134900.0,87510.0,35.1,4.2,17092,Amazon India,2026-10-24T09:00:00,89240.0,1
+PROD-1052,Bravia 55-inch 4K Ultra HD Smart LED Google TV (KD-55X74L),Televisions,Sony,99900.0,58650.0,41.3,3.6,379,Flipkart,2026-10-25T07:00:00,61010.0,1
+PROD-1053,Bravia XR 65-inch 4K HDR Full Array LED Google TV (XR-65X90L),Televisions,Sony,189900.0,123880.0,34.8,4.3,30260,Reliance Digital,2026-10-25T21:00:00,140370.0,1
+PROD-1054,55-inch 4K Ultra HD Smart QLED Google TV (55C645),Televisions,TCL,74990.0,34730.0,53.7,4.2,1945,Flipkart,2026-10-24T01:00:00,38040.0,1
+PROD-1055,Xiaomi X Series 50-inch 4K Ultra HD Smart Google TV,Televisions,Mi,42999.0,29310.0,31.8,4.1,22778,Flipkart,2026-10-24T18:00:00,29440.0,1
+PROD-1056,The GloLED Series 55-inch 4K Smart LED Google TV,Televisions,Vu,55000.0,33200.0,39.6,4.1,2319,Amazon India,2026-10-24T13:00:00,36010.0,1
+PROD-1057,"iPad 10th Gen 10.9-inch (A14 Bionic, Wi-Fi 64GB, Silver)",Tablets,Apple,39900.0,27510.0,31.1,4.1,1180,Flipkart,2026-10-25T16:00:00,32810.0,1
+PROD-1058,"iPad Air 11-inch M2 chip (Wi-Fi 128GB, Space Grey)",Tablets,Apple,59900.0,59900.0,0.0,4.1,5177,Amazon India,2026-10-24T23:00:00,55090.0,1
+PROD-1059,Galaxy Tab S9 FE 10.9-inch with S Pen (Wi-Fi 128GB),Tablets,Samsung,44999.0,33040.0,26.6,3.7,417,Croma,2026-10-25T18:00:00,32400.0,1
+PROD-1060,Galaxy Tab S9 Ultra 14.6-inch Dynamic AMOLED 2X (256GB),Tablets,Samsung,108999.0,102190.0,6.2,4.8,1066,Croma,2026-10-24T12:00:00,90770.0,1
+PROD-1061,"Tab M11 11-inch WUXGA with Pen (8GB RAM, 128GB)",Tablets,Lenovo,28000.0,19290.0,31.1,4.1,5647,Reliance Digital,2026-10-25T05:00:00,17690.0,1
+PROD-1062,"Pad 6 11-inch 2.8K 144Hz Display (Snapdragon 870, 8GB, 256GB)",Tablets,Xiaomi,39999.0,23520.0,41.2,4.2,866,Tata CLiQ,2026-10-24T07:00:00,28350.0,1
+PROD-1063,"Pad 11.61-inch 144Hz 7:5 ReadFit Display (12GB, 256GB)",Tablets,OnePlus,39999.0,32730.0,18.2,3.7,1057,Amazon India,2026-10-24T08:00:00,32560.0,1
+PROD-1064,EOS R50 Mirrorless Camera RF-S18-45mm IS STM Lens Kit,Cameras,Canon,75995.0,64290.0,15.4,4.1,1789,Flipkart,2026-10-25T00:00:00,63550.0,1
+PROD-1065,EOS R10 24.2 MP Mirrorless Camera with 18-150mm Lens Kit,Cameras,Canon,116995.0,111270.0,4.9,4.5,9223,Amazon India,2026-10-24T11:00:00,103500.0,1
+PROD-1066,"Alpha 7 IV Full-frame Hybrid Camera Body (33MP, 4K 60p)",Cameras,Sony,242490.0,212910.0,12.2,4.5,5151,Amazon India,2026-10-25T11:00:00,216610.0,1
+PROD-1067,ZV-E10 Mirrorless Vlog Camera with 16-50mm Lens Kit,Cameras,Sony,69990.0,65850.0,5.9,4.7,1019,Tata CLiQ,2026-10-24T02:00:00,61120.0,1
+PROD-1068,Z50 Mirrorless Camera with NIKKOR Z DX 16-50mm Lens Kit,Cameras,Nikon,85995.0,66840.0,22.3,3.6,11896,Reliance Digital,2026-10-25T19:00:00,67170.0,1
+PROD-1069,X-T30 II Mirrorless Digital Camera with XC15-45mm Lens Kit,Cameras,Fujifilm,99999.0,90260.0,9.7,4.1,1706,Amazon India,2026-10-25T21:00:00,93110.0,1
+PROD-1070,Lumix G7 16 MP 4K Mirrorless Camera with 14-42mm Lens,Cameras,Panasonic,54990.0,42240.0,23.2,4.5,2011,Amazon India,2026-10-24T05:00:00,41830.0,1
+PROD-1071,V8 Absolute Cordless Vacuum Cleaner (Powerful Suction),Home Appliances,Dyson,43900.0,35780.0,18.5,4.3,5885,Tata CLiQ,2026-10-25T09:00:00,33680.0,1
+PROD-1072,Purifier Hot+Cool Air Purifier HP07 (HEPA H13 Filter),Home Appliances,Dyson,66900.0,58210.0,13.0,4.9,2943,Flipkart,2026-10-25T05:00:00,57140.0,1
+PROD-1073,Airfryer HD9252/90 Digital Air Fryer with Rapid Air Tech,Home Appliances,Philips,12995.0,8520.0,34.4,4.3,5834,Flipkart,2026-10-25T18:00:00,8490.0,1
+PROD-1074,Smart Wi-Fi Connected Robot Vacuum Cleaner XU3000,Home Appliances,Philips,49995.0,26990.0,46.0,4.7,205,Amazon India,2026-10-25T09:00:00,30890.0,1
+PROD-1075,8.0 Kg 5 Star Inverter Fully-Automatic Front Load Washer,Home Appliances,LG,46990.0,35570.0,24.3,3.6,2793,Croma,2026-10-25T17:00:00,32050.0,1
+PROD-1076,28L Convection Microwave Oven with Tandoor Technology,Home Appliances,Samsung,17990.0,9920.0,44.9,4.6,10635,Flipkart,2026-10-24T23:00:00,11970.0,1
+PROD-1077,13 Place Settings Series 4 Dishwasher (Intensive Kadhai),Home Appliances,Bosch,54990.0,42810.0,22.1,4.3,1288,Croma,2026-10-25T06:00:00,40990.0,1
+PROD-1078,8.5 Kg 5 Star Fully-Automatic Front Loading Machine,Home Appliances,IFB,47500.0,29480.0,37.9,4.4,1629,Reliance Digital,2026-10-24T18:00:00,34250.0,1
+PROD-1079,"MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD, Space Grey)",Laptops,Apple,114900.0,93030.0,19.0,4.3,1691,Reliance Digital,2026-10-24T07:00:00,98000.0,1
+PROD-1080,"MacBook Pro M3 (14.2-inch, 16GB RAM, 512GB SSD, Space Black)",Laptops,Apple,199900.0,199900.0,0.0,4.8,2630,Tata CLiQ,2026-10-25T00:00:00,178900.0,1
+PROD-1081,"Inspiron 15 3530 (Intel Core i5-1335U, 16GB RAM, 512GB SSD)",Laptops,Dell,68500.0,48800.0,28.8,3.8,3437,Flipkart,2026-10-25T13:00:00,51510.0,1
+PROD-1082,"XPS 13 9315 (Intel Core i7-1250U, 16GB RAM, 512GB SSD, FHD+)",Laptops,Dell,124990.0,101310.0,18.9,4.4,21096,Croma,2026-10-25T00:00:00,105060.0,1
+PROD-1083,"Pavilion 15 (AMD Ryzen 7 7730U, 16GB RAM, 512GB SSD, Backlit KB)",Laptops,HP,72000.0,64530.0,10.4,4.7,2206,Flipkart,2026-10-25T01:00:00,58920.0,1
+PROD-1084,"Victus Gaming Laptop (Intel Core i5-12450H, RTX 3050, 144Hz)",Laptops,HP,79999.0,53320.0,33.3,4.8,5184,Amazon India,2026-10-25T10:00:00,63140.0,1
+PROD-1085,"ROG Zephyrus G14 (AMD Ryzen 9, RTX 4060, 16GB RAM, 1TB SSD)",Laptops,ASUS,159990.0,125880.0,21.3,3.7,10231,Flipkart,2026-10-24T05:00:00,142250.0,1
+PROD-1086,"Vivobook 15 (Intel Core i3-1215U, 8GB RAM, 512GB SSD)",Laptops,ASUS,49990.0,32470.0,35.0,4.1,8967,Flipkart,2026-10-25T06:00:00,34380.0,1
+PROD-1087,"IdeaPad Slim 3 (Intel Core i5-12450H, 16GB RAM, 512GB SSD)",Laptops,Lenovo,64990.0,48740.0,25.0,4.3,4701,Amazon India,2026-10-24T03:00:00,46210.0,1
+PROD-1088,"LOQ 15 Gaming (AMD Ryzen 7 7840HS, RTX 4050, 16GB, 512GB)",Laptops,Lenovo,94990.0,85180.0,10.3,4.7,320,Amazon India,2026-10-24T04:00:00,78200.0,1
+PROD-1089,"Nitro V 15 (Intel Core i5-13420H, RTX 4050 6GB, 16GB, 512GB)",Laptops,Acer,82999.0,62800.0,24.3,3.9,3246,Amazon India,2026-10-24T06:00:00,69220.0,1
+PROD-1090,"Aspire Lite (AMD Ryzen 5 5500U, 16GB RAM, 512GB SSD)",Laptops,Acer,52990.0,32170.0,39.3,4.1,1021,Amazon India,2026-10-25T19:00:00,34350.0,1
+PROD-1091,"iPhone 15 (128GB, Blue)",Smartphones,Apple,79900.0,68080.0,14.8,3.8,1436,Amazon India,2026-10-24T09:00:00,70830.0,1
+PROD-1092,"iPhone 15 Pro (256GB, Natural Titanium)",Smartphones,Apple,134900.0,123110.0,8.7,4.5,7673,Amazon India,2026-10-24T07:00:00,125420.0,1
+PROD-1093,"Galaxy S24 5G (8GB RAM, 128GB, Onyx Black)",Smartphones,Samsung,79999.0,71150.0,11.1,4.6,858,Croma,2026-10-25T13:00:00,68010.0,1
+PROD-1094,"Galaxy S24 Ultra (12GB RAM, 256GB, Titanium Gray)",Smartphones,Samsung,129999.0,115680.0,11.0,4.9,1245,Amazon India,2026-10-24T13:00:00,121580.0,1
+PROD-1095,"Galaxy A55 5G (8GB RAM, 128GB, Awesome Iceblue)",Smartphones,Samsung,42999.0,35580.0,17.3,4.6,552,Reliance Digital,2026-10-24T01:00:00,36250.0,1
+PROD-1096,"OnePlus 12 (16GB RAM, 512GB, Silky Black)",Smartphones,OnePlus,69999.0,61380.0,12.3,4.8,94,Amazon India,2026-10-25T08:00:00,63630.0,1
+PROD-1097,"OnePlus 12R (8GB RAM, 128GB, Cool Blue)",Smartphones,OnePlus,39999.0,35600.0,11.0,3.9,824,Amazon India,2026-10-25T13:00:00,36740.0,1
+PROD-1098,"OnePlus Nord CE4 5G (8GB RAM, 128GB, Celadon Marble)",Smartphones,OnePlus,24999.0,24999.0,0.0,4.7,3961,Flipkart,2026-10-24T18:00:00,22760.0,1
+PROD-1099,"Pixel 8 (128GB, Hazel)",Smartphones,Google,75999.0,60980.0,19.8,4.1,12069,Amazon India,2026-10-24T23:00:00,64830.0,1
+PROD-1100,"Pixel 8a (128GB, Bay Blue)",Smartphones,Google,52999.0,43110.0,18.7,3.6,5594,Tata CLiQ,2026-10-25T06:00:00,45970.0,1
+PROD-1101,"Redmi Note 13 Pro+ 5G (12GB RAM, 256GB, Fusion Purple)",Smartphones,Xiaomi,33999.0,26620.0,21.7,4.1,853,Amazon India,2026-10-24T07:00:00,27590.0,1
+PROD-1102,"Realme 12 Pro+ 5G (8GB RAM, 256GB, Submarine Blue)",Smartphones,Realme,31999.0,25690.0,19.7,3.4,4111,Tata CLiQ,2026-10-24T03:00:00,26720.0,1
+PROD-1103,WH-1000XM5 Wireless Active Noise Cancelling Headphones,Audio & Headphones,Sony,34990.0,26800.0,23.4,4.4,2510,Amazon India,2026-10-24T12:00:00,29080.0,1
+PROD-1104,WF-1000XM5 True Wireless Noise Cancelling Earbuds,Audio & Headphones,Sony,29990.0,24290.0,19.0,4.9,12626,Amazon India,2026-10-25T09:00:00,23880.0,1
+PROD-1105,WH-CH720N Noise Cancelling Wireless Over-Ear Headphones,Audio & Headphones,Sony,14990.0,8630.0,42.4,4.4,67,Amazon India,2026-10-24T04:00:00,9720.0,1
+PROD-1106,QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones,Audio & Headphones,Bose,32900.0,27750.0,15.7,3.9,2493,Flipkart,2026-10-25T03:00:00,27990.0,1
+PROD-1107,QuietComfort Ultra Wireless Earbuds with Spatial Audio,Audio & Headphones,Bose,29900.0,22730.0,24.0,4.1,4502,Flipkart,2026-10-25T20:00:00,25640.0,1
+PROD-1108,Momentum 4 Wireless Audiophile Headphones (60h Battery),Audio & Headphones,Sennheiser,34990.0,24430.0,30.2,3.7,523,Tata CLiQ,2026-10-25T09:00:00,24460.0,1
+PROD-1109,HD 450SE Bluetooth Wireless Active Noise Cancelling,Audio & Headphones,Sennheiser,14990.0,9050.0,39.6,4.4,2012,Amazon India,2026-10-25T21:00:00,8600.0,1
+PROD-1110,Live 660NC Wireless Over-Ear Active Noise Cancelling,Audio & Headphones,JBL,14999.0,9250.0,38.3,4.3,2072,Croma,2026-10-25T03:00:00,9220.0,1
+PROD-1111,Tune 770NC Adaptive Noise Cancelling Wireless Headphones,Audio & Headphones,JBL,9999.0,6090.0,39.1,4.5,6259,Flipkart,2026-10-24T22:00:00,6740.0,1
+PROD-1112,Rockerz 450 Bluetooth On-Ear Headphone (15 Hours Playback),Audio & Headphones,boAt,3990.0,1680.0,57.9,4.2,8615,Amazon India,2026-10-25T06:00:00,1560.0,1
+PROD-1113,"Nirvana Ion TWS Earbuds (120 Hours Playback, Dual EQ)",Audio & Headphones,boAt,7990.0,2240.0,72.0,3.7,1843,Reliance Digital,2026-10-25T19:00:00,2400.0,1
+PROD-1114,Noise Two Wireless On-Ear Headphones (50 Hours Playtime),Audio & Headphones,Noise,4999.0,1530.0,69.4,4.0,2551,Tata CLiQ,2026-10-25T10:00:00,1650.0,1
+PROD-1115,Watch Series 9 GPS 41mm Midnight Aluminium Case,Smartwatches & Wearables,Apple,41900.0,35090.0,16.3,4.5,8077,Flipkart,2026-10-24T11:00:00,36440.0,1
+PROD-1116,Watch Ultra 2 GPS + Cellular 49mm Titanium Case,Smartwatches & Wearables,Apple,89900.0,80530.0,10.4,3.9,678,Croma,2026-10-24T02:00:00,81670.0,1
+PROD-1117,Galaxy Watch 6 Bluetooth 44mm (Graphite),Smartwatches & Wearables,Samsung,33999.0,23620.0,30.5,4.2,4890,Reliance Digital,2026-10-25T03:00:00,23370.0,1
+PROD-1118,Galaxy Watch 6 Classic 47mm Bluetooth (Black),Smartwatches & Wearables,Samsung,40999.0,29530.0,28.0,4.8,1060,Amazon India,2026-10-25T10:00:00,29980.0,1
+PROD-1119,Forerunner 265 GPS Running Smartwatch (AMOLED Display),Smartwatches & Wearables,Garmin,50490.0,47960.0,5.0,4.8,6065,Flipkart,2026-10-24T06:00:00,47540.0,1
+PROD-1120,Instinct 2 Solar Rugged Outdoor Smartwatch,Smartwatches & Wearables,Garmin,46990.0,39270.0,16.4,4.4,4927,Flipkart,2026-10-24T16:00:00,40870.0,1
