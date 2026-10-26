@@ -1,9 +1,11 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# Distribution / packaging
 build/
 develop-eggs/
 dist/
@@ -20,31 +22,46 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual Environments
 .venv/
 venv/
 ENV/
 env/
 
-# IDE & OS
+# IDEs & Editors
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+
+# Operating System Files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Testing & Coverage
 .pytest_cache/
 .coverage
 htmlcov/
+.tox/
+.nox/
 
-# Local Database & Streamlit
+# Streamlit Local Runtime
+.streamlit/secrets.toml
+.streamlit/*.log
+
+# Local SQLite Databases (Preserve schema.sql, ignore binary runtime databases)
 *.db
+*.db-journal
 *.sqlite
 *.sqlite3
-.streamlit/secrets.toml
 
-# Environment Variables
+# Environment Variables & Secrets
 .env
-.env.local
+.env.*
+!.env.example
+
+# Logs
+*.log
+
