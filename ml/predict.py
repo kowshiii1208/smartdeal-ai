@@ -35,11 +35,17 @@ def load_model_pipeline(force_reload: bool = False):
     if _CACHED_PIPELINE is not None and not force_reload:
         return _CACHED_PIPELINE, _CACHED_METRICS
 
-    if not MODEL_PIPELINE_PATH.exists():
-        raise FileNotFoundError(
-            f"Trained model not found at {MODEL_PIPELINE_PATH}. "
-            f"Please run 'python -m ml.train' to train and save the model."
-        )
+    if not MODEL_PIPELINE_PATH.exists() or not MODEL_METRICS_PATH.exists():
+        logger.info(f"Trained model pipeline not found at {MODEL_PIPELINE_PATH}. Auto-training now...")
+        try:
+            from ml.train import run_training_pipeline
+            run_training_pipeline()
+        except Exception as e:
+            raise FileNotFoundError(
+                f"Trained model not found at {MODEL_PIPELINE_PATH} and auto-training failed: {e}. "
+                f"Please run 'python -m ml.train' to train and save the model."
+            )
+
 
     try:
         pipeline = joblib.load(MODEL_PIPELINE_PATH)
